@@ -2,6 +2,7 @@ import "./App.css";
 import {Todolist} from "./components/Todolist";
 import {FilterType, myTasksType} from "./common/PropsType";
 import {useState} from "react";
+import {GlobalStyled} from "./styles/GlobalStyled";
 
 
 function App() {
@@ -20,12 +21,12 @@ function App() {
         {
             id: 3,
             title: "Урок среда: JS",
-            isDone: false,
+            isDone: true,
         },
         {
             id: 4,
             title: "Практика в четверг",
-            isDone: false,
+            isDone: true,
         }
         ,
         {
@@ -46,6 +47,14 @@ function App() {
         }
     ])
 
+
+    const removeTask = (taskId: number) => {
+        const filerRemoveTasks = myTasks.filter(e => {
+            return e.id !== taskId
+        })
+        setMyTasks(filerRemoveTasks)
+    }
+
     const [filter, setFilter] = useState<FilterType>("all")
 
     let tasksTodolist = myTasks
@@ -60,10 +69,11 @@ function App() {
         setFilter(filter)
     }
 
-
     return (
         <div>
-            <Todolist title={"My tasks"} myTasks={tasksTodolist} changeFilter={changeFilteredTask}/>
+            <GlobalStyled/>
+            <Todolist title={"My tasks"} myTasks={tasksTodolist} changeFilter={changeFilteredTask}
+                      removeTask={removeTask}/>
         </div>
     );
 }
