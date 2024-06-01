@@ -32,12 +32,12 @@ function App() {
         {
             id: 5,
             title: "Практика в пятницу",
-            isDone: false,
+            isDone: true,
         },
         {
             id: 6,
             title: "Практика в субботу",
-            isDone: false,
+            isDone: true,
         }
         ,
         {
