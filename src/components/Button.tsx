@@ -1,24 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
+
 type ButtonPropsType = {
     title: string
     onClickHandler?: () => void
+    className?: string
 }
 export const Button = (props: ButtonPropsType) => {
     return (
-        <StyledButton onClick={props.onClickHandler}>{props.title}</StyledButton>
+        <StyledButton className={props.className} onClick={props.onClickHandler}>{props.title}</StyledButton>
     );
 };
 
 const StyledButton = styled.button`
     border: none;
     padding: 5px;
-    background-color: #c3d1d9;
     border-radius: 4px;
     border: 2px solid #c3d1d9;
     cursor: pointer;
-
+    
 
     &:hover {
         background-color: #c0f142;

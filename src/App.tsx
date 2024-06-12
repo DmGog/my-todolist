@@ -49,11 +49,25 @@ function App() {
         setFilter(filter)
     }
 
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = myTasks.find(t => t.id === taskId)
+        if (task) {
+            task.isDone = !task.isDone
+        }
+        let copy = [...myTasks]
+
+        setMyTasks(copy)
+    }
+
+
     return (
-        <div>
+        <div className="App">
             <GlobalStyled/>
             <Todolist title={"My tasks"} myTasks={tasksTodolist} changeFilter={changeFilteredTask}
-                      removeTask={removeTask} addTask={addTask} onDeleteAllTask={onDeleteAllTask}/>
+                      removeTask={removeTask} addTask={addTask} onDeleteAllTask={onDeleteAllTask}
+                      changeStatus={changeStatus}
+                      filter={filter}
+            />
         </div>
     );
 }

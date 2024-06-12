@@ -11,17 +11,20 @@ type TodolistPropsType = {
     removeTask: (taskId: string) => void
     addTask: (title: string) => void
     onDeleteAllTask: () => void
+    changeStatus: (taskId: string, isDone: boolean) => void
+    filter: FilterType
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, myTasks, changeFilter, removeTask, addTask, onDeleteAllTask} = props
+    const {title, myTasks, changeFilter, removeTask, addTask, onDeleteAllTask, changeStatus, filter} = props
 
     const [newTaskTitle, setNewTaskTitle] = useState("")
+    const [error, setError] = useState<string | null>(null)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-
+        setError(null)
         if (e.key === "Enter") {
             addTask(newTaskTitle);
             setNewTaskTitle("")
@@ -29,8 +32,8 @@ export const Todolist = (props: TodolistPropsType) => {
     }
 
     const addTasks = () => {
-        if (newTaskTitle === "") {
-            alert("введите название задачи")
+        if (newTaskTitle.trim() === "") {
+            setError("Field is required")
         } else {
             addTask(newTaskTitle.trim());
             setNewTaskTitle("")
@@ -42,22 +45,37 @@ export const Todolist = (props: TodolistPropsType) => {
     const onActiveClickHandler = () => changeFilter("active")
     const onCompletedClickHandler = () => changeFilter("completed")
 
+
     return (
         <FlexWrapper>
             <StyledTodolist>
                 <h1>{title}</h1>
                 <div>
-                    <input onKeyPress={onKeyPressHandler} onChange={onChangeHandler} value={newTaskTitle}/> <Button
-                    title={"+"} onClickHandler={addTasks}/></div>
+                    <input onKeyPress={onKeyPressHandler}
+                           onChange={onChangeHandler}
+                           value={newTaskTitle}
+                           className={error ? "error" : ""}
+                    />
+                    <Button title={"+"} onClickHandler={addTasks}/>
+                    {error && <div className={"error-message"}>Field is required</div>}
+                </div>
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>
                             {myTasks.map((m) => {
                                 const onRemoveTask = () => removeTask(m.id)
-
+                                const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
+                                    changeStatus(m.id, e.currentTarget.checked)
+                                }
                                 return (
-                                    <li key={m.id}><input type={"checkbox"} checked={m.isDone}/> <span>{m.title}</span>
+                                    <li key={m.id}>
+                                        <input type={"checkbox"} checked={m.isDone}
+                                               onChange={onChangeHandlerIsDone}
+
+                                        />
+                                        <span  className={m.isDone ? "is-done" : ""}>{m.title}</span>
                                         <Button title={"X"} onClickHandler={onRemoveTask}/>
+
                                     </li>
                                 )
                             })}
@@ -66,9 +84,13 @@ export const Todolist = (props: TodolistPropsType) => {
 
                 </StyledTask>
                 <ButtonWrapper>
-                    <Button title={"ALL"} onClickHandler={onAllClickHandler}/>
-                    <Button title={"ACTIVE"} onClickHandler={onActiveClickHandler}/>
-                    <Button title={"COMPLETED"} onClickHandler={onCompletedClickHandler}/>
+                    <Button className={filter === "all" ? "active-filter" : ""}
+                            title={"ALL"}
+                            onClickHandler={onAllClickHandler}/>
+                    <Button className={filter === "active" ? "active-filter" : ""} title={"ACTIVE"}
+                            onClickHandler={onActiveClickHandler}/>
+                    <Button className={filter === "completed" ? "active-filter" : ""} title={"COMPLETED"}
+                            onClickHandler={onCompletedClickHandler}/>
                 </ButtonWrapper>
                 <Button title={"delete all task"} onClickHandler={onDeleteAllTask}/>
             </StyledTodolist>
@@ -114,6 +136,7 @@ const StyledTodolist = styled.div`
     span {
         margin: 0 10px;
     }
+
 `
 
 const StyledTask = styled.div`
