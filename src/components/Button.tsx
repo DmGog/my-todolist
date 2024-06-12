@@ -19,10 +19,11 @@ const StyledButton = styled.button`
     border-radius: 4px;
     border: 2px solid #c3d1d9;
     cursor: pointer;
-    
+    background-color: ${props => props.className ? "active-filter" : "#d1ec93"};
+
 
     &:hover {
-        background-color: #c0f142;
+        background-color: #eba7f5;
         border: 2px solid #c0f142;
 
 
