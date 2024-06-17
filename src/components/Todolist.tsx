@@ -5,18 +5,19 @@ import styled from "styled-components";
 
 
 type TodolistPropsType = {
+    id: string
     title: string
     myTasks: myTasksType[]
-    changeFilter: (filter: FilterType) => void
-    removeTask: (taskId: string) => void
-    addTask: (title: string) => void
-    onDeleteAllTask: () => void
-    changeStatus: (taskId: string, isDone: boolean) => void
+    changeFilter: (filter: FilterType, todolistId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    addTask: (title: string, todolistId: string) => void
+    onDeleteAllTask: (todolistId: string) => void
+    changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     filter: FilterType
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, myTasks, changeFilter, removeTask, addTask, onDeleteAllTask, changeStatus, filter} = props
+    const {id, title, myTasks, changeFilter, removeTask, addTask, onDeleteAllTask, changeStatus, filter} = props
 
     const [newTaskTitle, setNewTaskTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -26,7 +27,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.key === "Enter") {
-            addTask(newTaskTitle);
+            addTask(newTaskTitle, id);
             setNewTaskTitle("")
         }
     }
@@ -35,15 +36,17 @@ export const Todolist = (props: TodolistPropsType) => {
         if (newTaskTitle.trim() === "") {
             setError("Field is required")
         } else {
-            addTask(newTaskTitle.trim());
+            addTask(newTaskTitle.trim(), id);
             setNewTaskTitle("")
         }
     }
 
 
-    const onAllClickHandler = () => changeFilter("all")
-    const onActiveClickHandler = () => changeFilter("active")
-    const onCompletedClickHandler = () => changeFilter("completed")
+    const onAllClickHandler = () => changeFilter("all", id)
+    const onActiveClickHandler = () => changeFilter("active", id)
+    const onCompletedClickHandler = () => changeFilter("completed", id)
+
+    const allDeleteTasks = () => onDeleteAllTask(id)
 
 
     return (
@@ -63,9 +66,9 @@ export const Todolist = (props: TodolistPropsType) => {
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>
                             {myTasks.map((m) => {
-                                const onRemoveTask = () => removeTask(m.id)
+                                const onRemoveTask = () => removeTask(m.id, id)
                                 const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
-                                    changeStatus(m.id, e.currentTarget.checked)
+                                    changeStatus(m.id, e.currentTarget.checked, id)
                                 }
                                 return (
                                     <li key={m.id}>
@@ -73,7 +76,7 @@ export const Todolist = (props: TodolistPropsType) => {
                                                onChange={onChangeHandlerIsDone}
 
                                         />
-                                        <span  className={m.isDone ? "is-done" : ""}>{m.title}</span>
+                                        <span className={m.isDone ? "is-done" : ""}>{m.title}</span>
                                         <Button title={"X"} onClickHandler={onRemoveTask}/>
 
                                     </li>
@@ -92,7 +95,7 @@ export const Todolist = (props: TodolistPropsType) => {
                     <Button className={filter === "completed" ? "active-filter" : ""} title={"COMPLETED"}
                             onClickHandler={onCompletedClickHandler}/>
                 </ButtonWrapper>
-                <Button title={"delete all task"} onClickHandler={onDeleteAllTask}/>
+                <Button title={"delete all task"} onClickHandler={allDeleteTasks}/>
             </StyledTodolist>
         </FlexWrapper>
     );
@@ -102,6 +105,7 @@ const FlexWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
 `
 
 
@@ -115,6 +119,7 @@ const StyledTodolist = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100%;
+    padding: 20px;
 
     h1 {
         color: green;
