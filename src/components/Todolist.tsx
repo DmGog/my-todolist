@@ -14,10 +14,22 @@ type TodolistPropsType = {
     onDeleteAllTask: (todolistId: string) => void
     changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     filter: FilterType
+    deleteTodolist: (todolistId: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {id, title, myTasks, changeFilter, removeTask, addTask, onDeleteAllTask, changeStatus, filter} = props
+    const {
+        deleteTodolist,
+        id,
+        title,
+        myTasks,
+        changeFilter,
+        removeTask,
+        addTask,
+        onDeleteAllTask,
+        changeStatus,
+        filter
+    } = props
 
     const [newTaskTitle, setNewTaskTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -47,11 +59,13 @@ export const Todolist = (props: TodolistPropsType) => {
     const onCompletedClickHandler = () => changeFilter("completed", id)
 
     const allDeleteTasks = () => onDeleteAllTask(id)
+    const deleteTodo = () => deleteTodolist(id)
 
 
     return (
         <FlexWrapper>
             <StyledTodolist>
+                <Button onClickHandler={deleteTodo} title={"Delete Todolist"}/>
                 <h1>{title}</h1>
                 <div>
                     <input onKeyPress={onKeyPressHandler}

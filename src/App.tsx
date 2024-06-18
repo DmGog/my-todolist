@@ -1,7 +1,7 @@
 import "./App.css";
 import {Todolist} from "./components/Todolist";
-import {FilterType, myTasksType, TodolistType} from "./common/PropsType";
-import {useState} from "react";
+import {FilterType, TodolistType} from "./common/PropsType";
+import React, {useState} from "react";
 import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
 
@@ -12,9 +12,21 @@ function App() {
     let todolist2 = v1()
 
     let [todolists, setTodolists] = useState<TodolistType[]>([
-        {id: todolist1, title: "My tasks", filter: "active"},
-        {id: todolist2, title: "My work", filter: "completed"},]
+        {id: todolist1, title: "My tasks", filter: "all"},
+        {id: todolist2, title: "My work", filter: "all"},]
     )
+
+    const deleteTodolist = (todolistId: string) => {
+        console.log(todolistId)
+        let deleteTodolist = todolists.filter(e => e.id !== todolistId)
+        todolists = deleteTodolist
+        setTodolists([...todolists])
+
+        // удалим и таски из памяти
+        delete myTasks[todolistId]
+        setMyTasks({...myTasks})
+    }
+
 
     let [myTasks, setMyTasks] = useState({
         [todolist1]: [
@@ -27,16 +39,17 @@ function App() {
             {id: v1(), title: "Практика в воскресенье", isDone: false,}
         ],
         [todolist2]: [
-            {id: v1(), title: "Урок в понедельник: React", isDone: true,},
-            {id: v1(), title: "Практика во вторник", isDone: true,},
+            {id: v1(), title: "Учиться", isDone: true,},
+            {id: v1(), title: "Учиться", isDone: true,},
         ],
 
     })
 
     const onDeleteAllTask = (todolistId: string) => {
         myTasks[todolistId] = []
-        setMyTasks(myTasks)
+        setMyTasks({...myTasks})
     }
+
     const addTask = (title: string, todolistId: string) => {
         let task = {id: v1(), title: title, isDone: false}
         let tasks = myTasks[todolistId]
@@ -96,6 +109,7 @@ function App() {
                                  onDeleteAllTask={onDeleteAllTask}
                                  changeStatus={changeStatus}
                                  filter={tl.filter}
+                                 deleteTodolist={deleteTodolist}
                 />
             })}
 
