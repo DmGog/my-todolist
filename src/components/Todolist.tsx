@@ -19,20 +19,28 @@ type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
     const {
-        deleteTodolist,
+
         id,
         title,
         myTasks,
+        filter,
         changeFilter,
         removeTask,
         addTask,
         onDeleteAllTask,
         changeStatus,
-        filter
+        deleteTodolist,
     } = props
 
     const [newTaskTitle, setNewTaskTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
+    let tasksTodolist = myTasks
+    if (filter === "active") {
+        tasksTodolist = tasksTodolist.filter(e => !e.isDone)
+    }
+    if (filter === "completed") {
+        tasksTodolist = tasksTodolist.filter(e => e.isDone)
+    }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
 
@@ -79,7 +87,7 @@ export const Todolist = (props: TodolistPropsType) => {
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>
-                            {myTasks.map((m) => {
+                            {tasksTodolist.map((m) => {
                                 const onRemoveTask = () => removeTask(m.id, id)
                                 const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
                                     changeStatus(m.id, e.currentTarget.checked, id)
