@@ -1,6 +1,6 @@
 import "./App.css";
 import {Todolist} from "./components/Todolist";
-import {FilterType, TodolistType} from "./common/PropsType";
+import {FilterType, TaskStateType, TodolistType} from "./common/PropsType";
 import React, {useState} from "react";
 import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
@@ -17,18 +17,11 @@ function App() {
         {id: todolist2, title: "My work", filter: "all"},]
     )
 
-    let [myTasks, setMyTasks] = useState({
+    let [myTasks, setMyTasks] = useState<TaskStateType>({
         [todolist1]: [
             {id: v1(), title: "Урок в понедельник: React", isDone: true,},
-            {id: v1(), title: "Практика во вторник", isDone: true,},
-            {id: v1(), title: "Урок среда: JS", isDone: true,},
-            {id: v1(), title: "Практика в четверг", isDone: true,},
-            {id: v1(), title: "Практика в пятницу", isDone: true,},
-            {id: v1(), title: "Практика в субботу", isDone: true,},
-            {id: v1(), title: "Практика в воскресенье", isDone: false,}
         ],
         [todolist2]: [
-            {id: v1(), title: "Учиться", isDone: true,},
             {id: v1(), title: "Учиться", isDone: true,},
         ],
 
@@ -67,10 +60,21 @@ function App() {
         }
     }
 
+    function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+        setMyTasks({
+            ...myTasks,
+            [todolistId]: myTasks[todolistId].map(e => e.id === taskId ? {...e, title: newTitle} : e)
+        })
+    }
+
     function addTodolist(title: string) {
         let todolist: TodolistType = {id: v1(), title, filter: "all"}
         setTodolists([todolist, ...todolists])
         setMyTasks({...myTasks, [todolist.id]: []})
+    }
+
+    function changeTodoTitle(newTitle: string, todolistId: string) {
+        setTodolists(todolists.map(e => e.id === todolistId ? {...e, title: newTitle} : e))
     }
 
     return (
@@ -91,6 +95,8 @@ function App() {
                                  changeStatus={changeStatus}
                                  filter={tl.filter}
                                  deleteTodolist={deleteTodolist}
+                                 changeTaskTitle={changeTaskTitle}
+                                 changeTodoTitle={changeTodoTitle}
                 />
             })}
 

@@ -3,6 +3,7 @@ import {FilterType, myTasksType} from "../common/PropsType";
 import {Button} from "./Button";
 import styled from "styled-components";
 import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 
 type TodolistPropsType = {
@@ -16,6 +17,8 @@ type TodolistPropsType = {
     changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     filter: FilterType
     deleteTodolist: (todolistId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    changeTodoTitle: (newTitle: string, todolistId: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
@@ -30,6 +33,8 @@ export const Todolist = (props: TodolistPropsType) => {
         onDeleteAllTask,
         changeStatus,
         deleteTodolist,
+        changeTaskTitle,
+        changeTodoTitle
     } = props
 
     let tasksTodolist = myTasks
@@ -51,11 +56,15 @@ export const Todolist = (props: TodolistPropsType) => {
         addTask(title, id)
     }
 
+    const changeTodolistTitle = (newTitle: string) => {
+        changeTodoTitle(newTitle, id)
+    }
+
     return (
         <FlexWrapper>
             <StyledTodolist>
                 <Button onClickHandler={deleteTodo} title={"Delete Todolist"}/>
-                <h1>{title}</h1>
+                <h1><EditableSpan oldTitle={title} callBack={changeTodolistTitle}/></h1>
                 <AddItemForm addItem={addItemTask}/>
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
@@ -65,13 +74,18 @@ export const Todolist = (props: TodolistPropsType) => {
                                 const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
                                     changeStatus(m.id, e.currentTarget.checked, id)
                                 }
+
+                                const onChangeTitleHandler = (newTitle: string) => {
+                                    changeTaskTitle(m.id, newTitle, id)
+                                }
                                 return (
                                     <li key={m.id}>
                                         <input type={"checkbox"} checked={m.isDone}
                                                onChange={onChangeHandlerIsDone}
 
                                         />
-                                        <span className={m.isDone ? "is-done" : ""}>{m.title}</span>
+                                        <EditableSpan className={m.isDone ? "is-done" : ""} oldTitle={m.title}
+                                                      callBack={onChangeTitleHandler}/>
                                         <Button title={"X"} onClickHandler={onRemoveTask}/>
 
                                     </li>
