@@ -1,7 +1,8 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {FilterType, myTasksType} from "../common/PropsType";
 import {Button} from "./Button";
 import styled from "styled-components";
+import {AddItemForm} from "./AddItemForm";
 
 
 type TodolistPropsType = {
@@ -19,7 +20,6 @@ type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
     const {
-
         id,
         title,
         myTasks,
@@ -32,8 +32,6 @@ export const Todolist = (props: TodolistPropsType) => {
         deleteTodolist,
     } = props
 
-    const [newTaskTitle, setNewTaskTitle] = useState("")
-    const [error, setError] = useState<string | null>(null)
     let tasksTodolist = myTasks
     if (filter === "active") {
         tasksTodolist = tasksTodolist.filter(e => !e.isDone)
@@ -42,26 +40,6 @@ export const Todolist = (props: TodolistPropsType) => {
         tasksTodolist = tasksTodolist.filter(e => e.isDone)
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === "Enter") {
-            addTask(newTaskTitle, id);
-            setNewTaskTitle("")
-        }
-    }
-
-    const addTasks = () => {
-        if (newTaskTitle.trim() === "") {
-            setError("Field is required")
-        } else {
-            addTask(newTaskTitle.trim(), id);
-            setNewTaskTitle("")
-        }
-    }
-
-
     const onAllClickHandler = () => changeFilter("all", id)
     const onActiveClickHandler = () => changeFilter("active", id)
     const onCompletedClickHandler = () => changeFilter("completed", id)
@@ -69,21 +47,16 @@ export const Todolist = (props: TodolistPropsType) => {
     const allDeleteTasks = () => onDeleteAllTask(id)
     const deleteTodo = () => deleteTodolist(id)
 
+    const addItemTask = (title: string) => {
+        addTask(title, id)
+    }
 
     return (
         <FlexWrapper>
             <StyledTodolist>
                 <Button onClickHandler={deleteTodo} title={"Delete Todolist"}/>
                 <h1>{title}</h1>
-                <div>
-                    <input onKeyPress={onKeyPressHandler}
-                           onChange={onChangeHandler}
-                           value={newTaskTitle}
-                           className={error ? "error" : ""}
-                    />
-                    <Button title={"+"} onClickHandler={addTasks}/>
-                    {error && <div className={"error-message"}>Field is required</div>}
-                </div>
+                <AddItemForm addItem={addItemTask}/>
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>

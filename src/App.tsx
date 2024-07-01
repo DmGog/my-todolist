@@ -4,6 +4,7 @@ import {FilterType, TodolistType} from "./common/PropsType";
 import React, {useState} from "react";
 import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
+import {AddItemForm} from "./components/AddItemForm";
 
 
 function App() {
@@ -34,12 +35,9 @@ function App() {
     })
 
     const deleteTodolist = (todolistId: string) => {
-        //     let deleteTodolist = todolists.filter(e => e.id !== todolistId)
-        // //     todolists = deleteTodolist
         setTodolists(todolists.filter(e => e.id !== todolistId))
         //     // удалим и таски из памяти
         delete myTasks[todolistId]
-        //     setMyTasks({...myTasks})
     }
 
     const onDeleteAllTask = (todolistId: string) => {
@@ -56,11 +54,6 @@ function App() {
     }
 
     function changeFilteredTask(filter: FilterType, todolistId: string) {
-        // let todolist = todolists.find(t => t.id === todolistId)
-        // if (todolist) {
-        //     todolist.filter = filter
-        //     setTodolists([...todolists])
-        // }
         setTodolists(todolists.map(e => e.id === todolistId ? {...e, filter} : e))
     }
 
@@ -74,10 +67,16 @@ function App() {
         }
     }
 
+    function addTodolist(title: string) {
+        let todolist: TodolistType = {id: v1(), title, filter: "all"}
+        setTodolists([todolist, ...todolists])
+        setMyTasks({...myTasks, [todolist.id]: []})
+    }
 
     return (
         <div className="App">
             <GlobalStyled/>
+            <AddItemForm addItem={addTodolist}/>
             {todolists.map((tl) => {
 
                 let tasksTodolist = myTasks[tl.id]
