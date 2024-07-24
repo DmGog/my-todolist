@@ -1,6 +1,6 @@
 import {TaskStateType} from "../common/PropsType";
 import {v1} from "uuid";
-import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
+import {AddTodolistActionType, RemoveTodolistActionType, todolist1, todolist2} from "./todolists-reducer";
 
 // типизация объектов action
 export type RemoveTaskActionType = {
@@ -10,7 +10,12 @@ export type RemoveTaskActionType = {
         taskId: string
     }
 }
-
+export type RemoveAllTasksActionType = {
+    type: "REMOVE-ALL-TASK"
+    payload: {
+        todolistId: string
+    }
+}
 export type AddTaskActionType = {
     type: "ADD-TASK"
     payload: {
@@ -45,9 +50,20 @@ type ActionsType =
     | AddTaskActionType
     | ChangeTaskStatusActionType
     | ChangeTaskTitleActionType
-    | AddTodolistActionType | RemoveTodolistActionType
+    | AddTodolistActionType | RemoveTodolistActionType | RemoveAllTasksActionType
 
-export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskStateType => {
+
+const initialState: TaskStateType = {
+    [todolist1]: [
+        {id: v1(), title: "Урок в понедельник: React", isDone: true,},
+    ],
+    [todolist2]: [
+        {id: v1(), title: "Учиться", isDone: true,},
+    ],
+
+}
+
+export const tasksReducer = (state: TaskStateType = initialState, action: ActionsType): TaskStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
             return {
@@ -82,8 +98,12 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskSta
             delete stateCopy[action.payload.id]
             return stateCopy
         }
+        case "REMOVE-ALL-TASK": {
+            const todolistId = action.payload.todolistId
+            return {...state, [todolistId]: state[todolistId] = []}
+        }
         default:
-            throw new Error("I dont type")
+            return state
     }
 }
 
@@ -107,5 +127,11 @@ export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: 
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
     return {
         type: "CHANGE-TASK-TITLE", payload: {taskId, title, todolistId}
+    }
+}
+
+export const removeAllTasksAC = (todolistId: string): RemoveAllTasksActionType => {
+    return {
+        type: "REMOVE-ALL-TASK", payload: {todolistId}
     }
 }
