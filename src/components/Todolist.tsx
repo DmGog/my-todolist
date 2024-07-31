@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React, {useCallback} from "react";
 import {FilterType, myTasksType} from "../common/PropsType";
 import {Button} from "./Button";
 import styled from "styled-components";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Task} from "./Task";
 
 
 type TodolistPropsType = {
@@ -21,7 +22,7 @@ type TodolistPropsType = {
     changeTodoTitle: (newTitle: string, todolistId: string) => void
 }
 
-export const Todolist = (props: TodolistPropsType) => {
+export const Todolist = React.memo((props: TodolistPropsType) => {
     const {
         id,
         title,
@@ -36,7 +37,7 @@ export const Todolist = (props: TodolistPropsType) => {
         changeTaskTitle,
         changeTodoTitle
     } = props
-
+    console.log("todo")
     let tasksTodolist = myTasks
     if (filter === "active") {
         tasksTodolist = tasksTodolist.filter(e => !e.isDone)
@@ -45,20 +46,20 @@ export const Todolist = (props: TodolistPropsType) => {
         tasksTodolist = tasksTodolist.filter(e => e.isDone)
     }
 
-    const onAllClickHandler = () => changeFilter("all", id)
-    const onActiveClickHandler = () => changeFilter("active", id)
-    const onCompletedClickHandler = () => changeFilter("completed", id)
+    const onAllClickHandler = useCallback(() => changeFilter("all", id), [changeFilter, id])
+    const onActiveClickHandler = useCallback(() => changeFilter("active", id), [changeFilter, id])
+    const onCompletedClickHandler = useCallback(() => changeFilter("completed", id), [changeFilter, id])
 
     const allDeleteTasks = () => onDeleteAllTask(id)
     const deleteTodo = () => deleteTodolist(id)
 
-    const addItemTask = (title: string) => {
+    const addItemTask = useCallback((title: string) => {
         addTask(title, id)
-    }
+    }, [addTask, id])
 
-    const changeTodolistTitle = (newTitle: string) => {
+    const changeTodolistTitle = useCallback((newTitle: string) => {
         changeTodoTitle(newTitle, id)
-    }
+    }, [changeTodoTitle, id])
 
     return (
         <FlexWrapper>
@@ -69,28 +70,9 @@ export const Todolist = (props: TodolistPropsType) => {
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>
-                            {tasksTodolist.map((m) => {
-                                const onRemoveTask = () => removeTask(m.id, id)
-                                const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
-                                    changeStatus(m.id, e.currentTarget.checked, id)
-                                }
-
-                                const onChangeTitleHandler = (newTitle: string) => {
-                                    changeTaskTitle(m.id, newTitle, id)
-                                }
-                                return (
-                                    <li key={m.id}>
-                                        <input type={"checkbox"} checked={m.isDone}
-                                               onChange={onChangeHandlerIsDone}
-
-                                        />
-                                        <EditableSpan className={m.isDone ? "is-done" : ""} oldTitle={m.title}
-                                                      callBack={onChangeTitleHandler}/>
-                                        <Button title={"X"} onClickHandler={onRemoveTask}/>
-
-                                    </li>
-                                )
-                            })}
+                            {tasksTodolist.map(m => <Task key={m.id} changeStatus={changeStatus} removeTask={removeTask}
+                                                          changeTaskTitle={changeTaskTitle} id={id} tasksTodolist={m}/>
+                            )}
                         </ul>
                     )}
 
@@ -108,15 +90,13 @@ export const Todolist = (props: TodolistPropsType) => {
             </StyledTodolist>
         </FlexWrapper>
     );
-};
+});
 
 const FlexWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
 `
-
 
 const StyledTodolist = styled.div`
     max-width: 300px;

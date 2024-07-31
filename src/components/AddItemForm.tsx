@@ -5,20 +5,12 @@ type AddItemType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemType) {
+export const AddItemForm = React.memo((props: AddItemType) => {
     const {addItem} = props
 
     const [newTitle, setNewTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setNewTitle(e.currentTarget.value)
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === "Enter") {
-            addItem(newTitle);
-            setNewTitle("")
-        }
-    }
 
     const addItems = () => {
         if (newTitle.trim() === "") {
@@ -26,6 +18,19 @@ export function AddItemForm(props: AddItemType) {
         } else {
             addItem(newTitle.trim());
             setNewTitle("")
+        }
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null)
+        }
+        if (e.key === "Enter" && newTitle.trim()!=="") {
+            addItem(newTitle);
+            setNewTitle("")
+        }
+        if(newTitle.trim() === ""){
+            setError("Field is required")
         }
     }
 
@@ -38,4 +43,4 @@ export function AddItemForm(props: AddItemType) {
         <Button title={"+"} onClickHandler={addItems}/>
         {error && <div className={"error-message"}>Field is required</div>}
     </div>
-}
+})
