@@ -1,5 +1,7 @@
 {
   "name": "portfolio-start",
+  "name": "my-todolist",
+  "homepage": "https://github.com/DmGog/my-todolist.git",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
