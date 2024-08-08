@@ -1,7 +1,5 @@
 {
   "name": "portfolio-start",
-  "name": "my-todolist",
-  "homepage": "https://github.com/DmGog/my-todolist.git",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -73,12 +71,15 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "storybook": "storybook dev -p 9009",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:storybook/recommended"
     ]
   },
   "browserslist": {
@@ -94,8 +95,20 @@
     ]
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "1.6.1",
+    "@storybook/addon-essentials": "^8.2.8",
+    "@storybook/addon-interactions": "^8.2.8",
+    "@storybook/addon-links": "^8.2.8",
+    "@storybook/addon-onboarding": "^8.2.8",
+    "@storybook/addon-webpack5-compiler-swc": "1.0.5",
+    "@storybook/blocks": "^8.2.8",
+    "@storybook/react": "^8.2.8",
+    "@storybook/react-webpack5": "^8.2.8",
+    "@storybook/test": "^8.2.8",
     "@types/styled-components": "5.1.26",
-    "babel-plugin-styled-components": "2.0.7"
+    "babel-plugin-styled-components": "2.0.7",
+    "eslint-plugin-storybook": "^0.8.0",
+    "storybook": "^8.2.8"
   },
   "jest": {
     "roots": [
