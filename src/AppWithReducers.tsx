@@ -4,7 +4,7 @@ import {FilterType, TaskStateType, TodolistType} from "./common/PropsType";
 import React, {useReducer, useState} from "react";
 import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
-import {AddItemForm} from "./components/AddItemForm";
+import {AddItemForm} from "./components/AddItenForm/AddItemForm";
 import {
     addTodolistAC,
     changeTodolistFilterActionAC,

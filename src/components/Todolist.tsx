@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import {FilterType, myTasksType} from "../common/PropsType";
 import {Button} from "./Button";
 import styled from "styled-components";
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "./AddItenForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Task} from "./Task";
 
