@@ -3,7 +3,7 @@ import {FilterType, myTasksType} from "../common/PropsType";
 import {Button} from "./Button";
 import styled from "styled-components";
 import {AddItemForm} from "./AddItenForm/AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "./EditableSpan/EditableSpan";
 import {Task} from "./Task";
 
 

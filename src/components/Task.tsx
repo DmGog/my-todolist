@@ -1,6 +1,6 @@
 import {myTasksType} from "../common/PropsType";
 import React, {ChangeEvent, useCallback} from "react";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "./EditableSpan/EditableSpan";
 import {Button} from "./Button";
 
 type TaskPropsType = {
