@@ -1,24 +1,24 @@
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../state/store";
-import {FilterType, TaskStateType, TodolistType} from "../../common/PropsType";
 import {useCallback} from "react";
 import {
     addTodolistAC,
     changeTodolistFilterActionAC,
-    changeTodolistTitleAC,
-    removeTodolistAC
+    changeTodolistTitleAC, FilterType,
+    removeTodolistAC, TodolistDomainType
 } from "../../state/todolists-reducer";
 import {
     addTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeAllTasksAC,
-    removeTaskAC
+    removeTaskAC, TaskStateType
 } from "../../state/tasks-reducer";
+import {TaskStatuses} from "../../api/todolists-a-p-i";
 
-export const useAppWithredux = ()=>{
+export const useAppWithredux = () => {
     const dispatch = useDispatch()
-    const todolists = useSelector<AppRootState, TodolistType[]>((state) => state.todolists)
+    const todolists = useSelector<AppRootState, TodolistDomainType[]>((state) => state.todolists)
     const myTasks = useSelector<AppRootState, TaskStateType>((state) => state.tasks)
 
     const deleteTodolist = useCallback((todolistId: string) => {
@@ -54,8 +54,8 @@ export const useAppWithredux = ()=>{
         dispatch(action)
     }, [dispatch])
 
-    const changeStatus = useCallback((taskId: string, isDone: boolean, todolistId: string) => {
-        const action = changeTaskStatusAC(taskId, isDone, todolistId)
+    const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
+        const action = changeTaskStatusAC(taskId, status, todolistId)
         dispatch(action)
     }, [dispatch])
 
@@ -65,6 +65,16 @@ export const useAppWithredux = ()=>{
     }, [dispatch])
 
     return {
-        todolists,myTasks, deleteTodolist,addTodolist,changeTodoTitle,changeFilter,onDeleteAllTask,addTask,removeTask,changeStatus,changeTaskTitle
+        todolists,
+        myTasks,
+        deleteTodolist,
+        addTodolist,
+        changeTodoTitle,
+        changeFilter,
+        onDeleteAllTask,
+        addTask,
+        removeTask,
+        changeStatus,
+        changeTaskTitle
     }
 }

@@ -1,23 +1,8 @@
 import "../App.css";
 import {Todolist} from "../components/Todolist";
-import {FilterType, TaskStateType, TodolistType} from "../common/PropsType";
-import React, {useCallback} from "react";
+import React from "react";
 import {GlobalStyled} from "../styles/GlobalStyled";
 import {AddItemForm} from "../components/AddItenForm/AddItemForm";
-import {
-    addTodolistAC,
-    changeTodolistFilterActionAC,
-    changeTodolistTitleAC, removeTodolistAC,
-} from "../state/todolists-reducer";
-import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeAllTasksAC,
-    removeTaskAC,
-} from "../state/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../state/store";
 import {useAppWithredux} from "./hooks/useAppWithredux";
 
 

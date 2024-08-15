@@ -1,20 +1,20 @@
-import {myTasksType} from "../common/PropsType";
 import React, {ChangeEvent, useCallback} from "react";
 import {EditableSpan} from "./EditableSpan/EditableSpan";
 import {Button} from "./Button";
+import {TaskStatuses, TaskType} from "../api/todolists-a-p-i";
 
 type TaskPropsType = {
-    changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
     removeTask: (taskId: string, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     id: string
-    tasksTodolist: myTasksType
+    tasksTodolist: TaskType
 }
 export const Task = React.memo((props: TaskPropsType) => {
     const {changeStatus, removeTask, changeTaskTitle, id, tasksTodolist} = props
     const onRemoveTask = () => removeTask(tasksTodolist.id, id)
     const onChangeHandlerIsDone = (e: ChangeEvent<HTMLInputElement>) => {
-        changeStatus(tasksTodolist.id, e.currentTarget.checked, id)
+        changeStatus(tasksTodolist.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New, id)
     }
 
     const onChangeTitleHandler = useCallback((newTitle: string) => {
@@ -22,11 +22,12 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [changeTaskTitle, id, tasksTodolist])
     return (
         <li key={tasksTodolist.id}>
-            <input type={"checkbox"} checked={tasksTodolist.isDone}
+            <input type={"checkbox"} checked={tasksTodolist.status === TaskStatuses.Completed}
                    onChange={onChangeHandlerIsDone}
 
             />
-            <EditableSpan className={tasksTodolist.isDone ? "is-done" : ""} oldTitle={tasksTodolist.title}
+            <EditableSpan className={tasksTodolist.status === TaskStatuses.Completed ? "is-done" : ""}
+                          oldTitle={tasksTodolist.title}
                           callBack={onChangeTitleHandler}/>
             <Button title={"X"} onClickHandler={onRemoveTask}/>
 

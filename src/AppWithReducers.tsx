@@ -1,14 +1,13 @@
 import "./App.css";
 import {Todolist} from "./components/Todolist";
-import {FilterType, TaskStateType, TodolistType} from "./common/PropsType";
-import React, {useReducer, useState} from "react";
+import React, {useReducer} from "react";
 import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItenForm/AddItemForm";
 import {
     addTodolistAC,
     changeTodolistFilterActionAC,
-    changeTodolistTitleAC, removeTodolistAC,
+    changeTodolistTitleAC, FilterType, removeTodolistAC,
     todolistsReducer
 } from "./state/todolists-reducer";
 import {
@@ -19,6 +18,7 @@ import {
     removeTaskAC,
     tasksReducer
 } from "./state/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "./api/todolists-a-p-i";
 
 
 function AppWithReducers() {
@@ -27,16 +27,37 @@ function AppWithReducers() {
     let todolist2 = v1()
 
     let [todolists, dispatchToTodolistsReducer] = useReducer(todolistsReducer, [
-        {id: todolist1, title: "My tasks", filter: "all"},
-        {id: todolist2, title: "My work", filter: "all"},]
+        {id: todolist1, title: "My tasks", filter: "all", addedDate: "", order: 0},
+        {id: todolist2, title: "My work", filter: "all", addedDate: "", order: 0},]
     )
 
     let [myTasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
         [todolist1]: [
-            {id: v1(), title: "Урок в понедельник: React", isDone: true,},
+            {id: v1(),
+        title: "React",
+        status: TaskStatuses.Completed,
+        todoListId: todolist1,
+        description: "",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+        order: 0,
+        priority: TaskPriorities.Hi,}
         ],
         [todolist2]: [
-            {id: v1(), title: "Учиться", isDone: true,},
+            {
+                id: v1(),
+                title: "JS",
+                status: TaskStatuses.Completed,
+                todoListId: todolist2,
+                description: "",
+                startDate: "",
+                deadline: "",
+                addedDate: "",
+                order: 0,
+                priority: TaskPriorities.Hi,
+
+            }
         ],
 
     })
@@ -76,8 +97,8 @@ function AppWithReducers() {
         dispatchToTasksReducer(action)
     }
 
-    function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
-        const action = changeTaskStatusAC(taskId, isDone, todolistId)
+    function changeStatus(taskId: string, status: TaskStatuses, todolistId: string) {
+        const action = changeTaskStatusAC(taskId, status, todolistId)
         dispatchToTasksReducer(action)
     }
 
