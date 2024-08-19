@@ -1,10 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../state/store";
+import {AppRootState, AppThunkDispatch} from "../../state/store";
 import {useCallback, useEffect} from "react";
 import {
     addTodolistAC,
     changeTodolistFilterActionAC,
-    changeTodolistTitleAC, fetchTodolistsThunk, FilterType,
+    changeTodolistTitleAC, fetchTodosThunk, FilterType,
     removeTodolistAC, TodolistDomainType
 } from "../../state/todolists-reducer";
 import {
@@ -18,13 +18,14 @@ import {TaskStatuses} from "../../api/todolists-a-p-i";
 
 
 export const useAppWithredux = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppThunkDispatch>()
     const todolists = useSelector<AppRootState, TodolistDomainType[]>((state) => state.todolists)
     const myTasks = useSelector<AppRootState, TaskStateType>((state) => state.tasks)
 
 
     useEffect(() => {
-        fetchTodolistsThunk(dispatch)
+        /*  fetchTodosThunk(dispatch)*/
+        dispatch(fetchTodosThunk)
     }, []);
 
 
