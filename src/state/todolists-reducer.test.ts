@@ -1,7 +1,7 @@
 import {
-    addTodolistAC,
-    changeTodolistFilterActionAC, changeTodolistTitleAC,
-    removeTodolistAC, setTodolistsAC, TodolistDomainType,
+    createTodolistAC,
+    changeTodolistFilterActionAC, updateTodolistTitleAC,
+    deleteTodolistAC, getTodolistsAC, TodolistDomainType,
     todolistsReducer
 } from "./todolists-reducer"
 import {v1} from "uuid"
@@ -18,7 +18,7 @@ test("correct todolist should be removed", () => {
     ]
 
     // 2. Действие
-    const action = removeTodolistAC(todolistId1)
+    const action = deleteTodolistAC(todolistId1)
     const endState = todolistsReducer(startState, action)
 
     // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
@@ -37,7 +37,12 @@ test("correct todolist should be added", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0},
     ]
 
-    const endState = todolistsReducer(startState, addTodolistAC("New Todolist"))
+    const endState = todolistsReducer(startState, createTodolistAC({
+        id: todolistId2,
+        title: "New Todolist",
+        addedDate: "",
+        order: 0
+    }))
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe("New Todolist")
@@ -52,7 +57,7 @@ test("correct todolist should change its name", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0},
     ]
 
-    const action = changeTodolistTitleAC(todolistId2, "New Todolist")
+    const action = updateTodolistTitleAC(todolistId2, "New Todolist")
 
     const endState = todolistsReducer(startState, action)
 
@@ -86,7 +91,7 @@ test("set todolists ", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0},
     ]
 
-    const action = setTodolistsAC(startState)
+    const action = getTodolistsAC(startState)
 
     const endState = todolistsReducer([], action)
 

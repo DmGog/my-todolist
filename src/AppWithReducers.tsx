@@ -5,17 +5,17 @@ import {GlobalStyled} from "./styles/GlobalStyled";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItenForm/AddItemForm";
 import {
-    addTodolistAC,
+    createTodolistAC,
     changeTodolistFilterActionAC,
-    changeTodolistTitleAC, FilterType, removeTodolistAC,
+    updateTodolistTitleAC, FilterType, deleteTodolistAC,
     todolistsReducer
 } from "./state/todolists-reducer";
 import {
-    addTaskAC,
+    createTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeAllTasksAC,
-    removeTaskAC,
+    deleteTaskAC,
     tasksReducer
 } from "./state/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "./api/todolists-a-p-i";
@@ -33,16 +33,18 @@ function AppWithReducers() {
 
     let [myTasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
         [todolist1]: [
-            {id: v1(),
-        title: "React",
-        status: TaskStatuses.Completed,
-        todoListId: todolist1,
-        description: "",
-        startDate: "",
-        deadline: "",
-        addedDate: "",
-        order: 0,
-        priority: TaskPriorities.Hi,}
+            {
+                id: v1(),
+                title: "React",
+                status: TaskStatuses.Completed,
+                todoListId: todolist1,
+                description: "",
+                startDate: "",
+                deadline: "",
+                addedDate: "",
+                order: 0,
+                priority: TaskPriorities.Hi,
+            }
         ],
         [todolist2]: [
             {
@@ -63,19 +65,19 @@ function AppWithReducers() {
     })
 
     const deleteTodolist = (todolistId: string) => {
-        const action = removeTodolistAC(todolistId)
+        const action = deleteTodolistAC(todolistId)
         dispatchToTodolistsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function addTodolist(title: string) {
-        const action = addTodolistAC(title)
+        const action = createTodolistAC({id: v1(), title, addedDate: "", order: 0})
         dispatchToTodolistsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function changeTodoTitle(newTitle: string, todolistId: string) {
-        dispatchToTodolistsReducer(changeTodolistTitleAC(todolistId, newTitle))
+        dispatchToTodolistsReducer(updateTodolistTitleAC(todolistId, newTitle))
     }
 
     function changeFilter(filter: FilterType, todolistId: string) {
@@ -88,12 +90,23 @@ function AppWithReducers() {
     }
 
     const addTask = (title: string, todolistId: string) => {
-        const action = addTaskAC(title, todolistId)
+        const action = createTaskAC({
+            id: todolistId,
+            title,
+            status: TaskStatuses.Completed,
+            todoListId: todolistId,
+            description: "",
+            startDate: "",
+            deadline: "",
+            addedDate: "",
+            order: 0,
+            priority: TaskPriorities.Hi,
+        })
         dispatchToTasksReducer(action)
     }
 
     const removeTask = (taskId: string, todolistId: string) => {
-        const action = removeTaskAC(taskId, todolistId)
+        const action = deleteTaskAC(taskId, todolistId)
         dispatchToTasksReducer(action)
     }
 
