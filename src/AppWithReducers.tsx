@@ -12,8 +12,7 @@ import {
 } from "./state/todolists-reducer";
 import {
     createTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
+    updateTaskAC,
     removeAllTasksAC,
     deleteTaskAC,
     tasksReducer
@@ -111,12 +110,12 @@ function AppWithReducers() {
     }
 
     function changeStatus(taskId: string, status: TaskStatuses, todolistId: string) {
-        const action = changeTaskStatusAC(taskId, status, todolistId)
+        const action = updateTaskAC(taskId, {status}, todolistId)
         dispatchToTasksReducer(action)
     }
 
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(taskId, newTitle, todolistId)
+        const action = updateTaskAC(taskId, {title: newTitle}, todolistId)
         dispatchToTasksReducer(action)
     }
 

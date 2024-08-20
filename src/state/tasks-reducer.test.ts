@@ -1,7 +1,6 @@
 import {
     createTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
+    updateTaskAC,
     removeAllTasksAC,
     deleteTaskAC,
     getTasksTodolistAC,
@@ -344,7 +343,7 @@ test("status of specified task should be changed", () => {
         ]
     }
 
-    const action = changeTaskStatusAC("2", TaskStatuses.New, "todolistId2")
+    const action = updateTaskAC("2", {status: TaskStatuses.New}, "todolistId2")
 
     const endState = tasksReducer(startState, action)
     expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New)
@@ -431,7 +430,7 @@ test("title of specified task should be changed", () => {
         ]
     }
 
-    const action = changeTaskTitleAC("2", "coffee", "todolistId2")
+    const action = updateTaskAC("2", {title: "coffee"}, "todolistId2")
 
     const endState = tasksReducer(startState, action)
     expect(endState["todolistId2"][1].title).toBe("coffee")
