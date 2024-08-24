@@ -1,23 +1,23 @@
-import "./App.css";
-import {Todolist} from "./components/Todolist";
+import "../AppWithRedux/App.css";
+import {Todolist} from "../features/Todolists/todolist/Todolist";
 import React, {useReducer} from "react";
-import {GlobalStyled} from "./styles/GlobalStyled";
+import {GlobalStyled} from "../styles/GlobalStyled";
 import {v1} from "uuid";
-import {AddItemForm} from "./components/AddItenForm/AddItemForm";
+import {AddItemForm} from "../components/AddItenForm/AddItemForm";
 import {
     createTodolistAC,
     changeTodolistFilterActionAC,
     updateTodolistTitleAC, FilterType, deleteTodolistAC,
     todolistsReducer
-} from "./state/todolists-reducer";
+} from "../features/Todolists/todolist/todolists-reducer";
 import {
     createTaskAC,
     updateTaskAC,
     removeAllTasksAC,
     deleteTaskAC,
     tasksReducer
-} from "./state/tasks-reducer";
-import {TaskPriorities, TaskStatuses} from "./api/todolists-a-p-i";
+} from "../features/Todolists/todolist/task/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
 
 
 function AppWithReducers() {

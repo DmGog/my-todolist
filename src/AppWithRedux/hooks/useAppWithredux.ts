@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "../../state/store";
+import {AppRootState, useAppDispatch} from "../store";
 import {useCallback, useEffect} from "react";
 import {
     changeTodolistFilterActionAC,
@@ -9,12 +9,12 @@ import {
     deleteTodoTC,
     createTodoTC,
     updateTodoTitleTC
-} from "../../state/todolists-reducer";
+} from "../../features/Todolists/todolist/todolists-reducer";
 import {
     createTaskTC,
     removeAllTasksAC,
     deleteTaskTC, TaskStateType, updateTaskTC
-} from "../../state/tasks-reducer";
+} from "../../features/Todolists/todolist/task/tasks-reducer";
 import {TaskStatuses} from "../../api/todolists-a-p-i";
 
 

@@ -1,12 +1,12 @@
-import "./App.css";
+import "../AppWithRedux/App.css";
 import React, {useState} from "react";
 import {v1} from "uuid";
-import {FilterType, TodolistDomainType} from "./state/todolists-reducer";
-import {TaskStateType} from "./state/tasks-reducer";
-import {TaskPriorities, TaskStatuses} from "./api/todolists-a-p-i";
-import {GlobalStyled} from "./styles/GlobalStyled";
-import {AddItemForm} from "./components/AddItenForm/AddItemForm";
-import {Todolist} from "./components/Todolist";
+import {FilterType, TodolistDomainType} from "../features/Todolists/todolist/todolists-reducer";
+import {TaskStateType} from "../features/Todolists/todolist/task/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
+import {GlobalStyled} from "../styles/GlobalStyled";
+import {AddItemForm} from "../components/AddItenForm/AddItemForm";
+import {Todolist} from "../features/Todolists/todolist/Todolist";
 
 
 function App() {

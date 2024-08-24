@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback} from "react";
-import {EditableSpan} from "./EditableSpan/EditableSpan";
-import {Button} from "./Button";
-import {TaskStatuses, TaskType} from "../api/todolists-a-p-i";
+import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+import {Button} from "../../../../components/Button";
+import {TaskStatuses, TaskType} from "../../../../api/todolists-a-p-i";
 
 type TaskPropsType = {
     changeStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void

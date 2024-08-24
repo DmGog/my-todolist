@@ -1,5 +1,5 @@
-import "../App.css";
-import {Todolist} from "../components/Todolist";
+import "./App.css";
+import {Todolist} from "../features/Todolists/todolist/Todolist";
 import React from "react";
 import {GlobalStyled} from "../styles/GlobalStyled";
 import {AddItemForm} from "../components/AddItenForm/AddItemForm";
