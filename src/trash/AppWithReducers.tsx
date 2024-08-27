@@ -5,17 +5,19 @@ import {GlobalStyled} from "../styles/GlobalStyled";
 import {v1} from "uuid";
 import {AddItemForm} from "../components/AddItenForm/AddItemForm";
 import {
-    createTodolistAC,
     changeTodolistFilterActionAC,
-    updateTodolistTitleAC, FilterType, deleteTodolistAC,
-    todolistsReducer
+    createTodolistAC,
+    deleteTodolistAC,
+    FilterType,
+    todolistsReducer,
+    updateTodolistTitleAC
 } from "../features/Todolists/todolist/todolists-reducer";
 import {
     createTaskAC,
-    updateTaskAC,
-    removeAllTasksAC,
     deleteTaskAC,
-    tasksReducer
+    removeAllTasksAC,
+    tasksReducer,
+    updateTaskAC
 } from "../features/Todolists/todolist/task/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
 
@@ -26,8 +28,8 @@ function AppWithReducers() {
     let todolist2 = v1()
 
     let [todolists, dispatchToTodolistsReducer] = useReducer(todolistsReducer, [
-        {id: todolist1, title: "My tasks", filter: "all", addedDate: "", order: 0},
-        {id: todolist2, title: "My work", filter: "all", addedDate: "", order: 0},]
+        {id: todolist1, title: "My tasks", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolist2, title: "My work", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},]
     )
 
     let [myTasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
@@ -128,15 +130,13 @@ function AppWithReducers() {
 
                 let tasksTodolist = myTasks[tl.id]
                 return <Todolist key={tl.id}
-                                 id={tl.id}
-                                 title={tl.title}
+                                 todolist={tl}
                                  myTasks={tasksTodolist}
                                  changeFilter={changeFilter}
                                  removeTask={removeTask}
                                  addTask={addTask}
                                  onDeleteAllTask={onDeleteAllTask}
                                  changeStatus={changeStatus}
-                                 filter={tl.filter}
                                  deleteTodolist={deleteTodolist}
                                  changeTaskTitle={changeTaskTitle}
                                  changeTodoTitle={changeTodoTitle}

@@ -15,8 +15,8 @@ function App() {
     let todolist2 = v1()
 
     let [todolists, setTodolists] = useState<TodolistDomainType[]>([
-        {id: todolist1, title: "My tasks", filter: "all", addedDate: "", order: 0},
-        {id: todolist2, title: "My work", filter: "all", addedDate: "", order: 0},]
+        {id: todolist1, title: "My tasks", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolist2, title: "My work", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},]
     )
 
     let [myTasks, setMyTasks] = useState<TaskStateType>({
@@ -58,7 +58,14 @@ function App() {
     }
 
     function addTodolist(title: string) {
-        let todolist: TodolistDomainType = {id: v1(), title, filter: "all", addedDate: "", order: 0}
+        let todolist: TodolistDomainType = {
+            id: v1(),
+            title,
+            filter: "all",
+            addedDate: "",
+            order: 0,
+            entityStatus: "idle"
+        }
         setTodolists([todolist, ...todolists])
         setMyTasks({...myTasks, [todolist.id]: []})
     }
@@ -122,15 +129,13 @@ function App() {
 
                 let tasksTodolist = myTasks[tl.id]
                 return <Todolist key={tl.id}
-                                 id={tl.id}
-                                 title={tl.title}
+                                 todolist={tl}
                                  myTasks={tasksTodolist}
                                  changeFilter={changeFilteredTask}
                                  removeTask={removeTask}
                                  addTask={addTask}
                                  onDeleteAllTask={onDeleteAllTask}
                                  changeStatus={changeStatus}
-                                 filter={tl.filter}
                                  deleteTodolist={deleteTodolist}
                                  changeTaskTitle={changeTaskTitle}
                                  changeTodoTitle={changeTodoTitle}

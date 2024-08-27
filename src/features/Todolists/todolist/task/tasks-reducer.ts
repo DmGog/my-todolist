@@ -1,6 +1,13 @@
 import {CreateTodolistAT, DeleteTodolistAT, SetTodosAT, TodolistDomainType} from "../todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "../../../../api/todolists-a-p-i";
+import {
+    TaskPriorities,
+    TaskStatuses,
+    TaskType,
+    todolistsAPI,
+    UpdateTaskModelType
+} from "../../../../api/todolists-a-p-i";
 import {AppRootState, AppThunkDispatch} from "../../../../AppWithRedux/store";
+import {setErrorAC, setStatusAC} from "../../../../AppWithRedux/app-reducer";
 
 
 export type TaskStateType = { [key: string]: TaskType[] }
@@ -46,7 +53,7 @@ export const tasksReducer = (state: TaskStateType = initialState, action: Action
             return {...state, [todolistId]: state[todolistId].map(t => t.id === taskId ? {...t, ...model} : t)}
         }
         case "ADD-TODOLIST": {
-            const todolist: TodolistDomainType = {...action.payload.todolist, filter: "all"}
+            const todolist: TodolistDomainType = {...action.payload.todolist, filter: "all", entityStatus: "idle"}
             return {...state, [todolist.id]: []}
         }
         case "REMOVE-TODOLIST": {
@@ -101,8 +108,10 @@ export const getTasksTodolistAC = (todolistId: string, tasks: TaskType[]) => ({
 
 export const getTasksTC = (todolistId: string) => {
     return (dispatch: AppThunkDispatch) => {
+        dispatch(setStatusAC("loading"))
         todolistsAPI.getTodolistTasks(todolistId).then(res => {
             dispatch(getTasksTodolistAC(todolistId, res.data.items))
+            dispatch(setStatusAC("succeeded"))
         })
     }
 }
@@ -115,8 +124,14 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => {
 }
 export const createTaskTC = (todolistId: string, title: string) => {
     return (dispatch: AppThunkDispatch) => {
+        dispatch(setStatusAC("loading"))
         todolistsAPI.createTodolistTask(todolistId, title).then(res => {
+            if (res.data.resultCode !== 0) {
+                dispatch(setErrorAC(res.data.messages[0]))
+                dispatch(setStatusAC("failed"))
+            }
             dispatch(createTaskAC(res.data.data.item))
+            dispatch(setStatusAC("succeeded"))
         })
     }
 }

@@ -1,7 +1,8 @@
 import {todolistsAPI, TodolistType} from "../../../api/todolists-a-p-i";
 import {AppThunkDispatch} from "../../../AppWithRedux/store";
+import {RequestStatusType, setStatusAC} from "../../../AppWithRedux/app-reducer";
 
-export type TodolistDomainType = TodolistType & { filter: FilterType }
+export type TodolistDomainType = TodolistType & { filter: FilterType, entityStatus: RequestStatusType }
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -32,7 +33,7 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
         }
 
         case "ADD-TODOLIST": {
-            const todolist: TodolistDomainType = {...action.payload.todolist, filter: "all"}
+            const todolist: TodolistDomainType = {...action.payload.todolist, filter: "all", entityStatus: "idle"}
             return [...state, todolist]
         }
 
@@ -46,7 +47,7 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
         }
         case "SET-TODOLISTS": {
             return action.payload.todolists.map((e) => {
-                return {...e, filter: "all"}
+                return {...e, filter: "all", entityStatus: "idle"}
             })
         }
 
@@ -77,8 +78,10 @@ export const getTodolistsAC = (todolists: TodolistType[]) => (
 
 export const getTodosTC = () => {
     return (dispatch: AppThunkDispatch) => {
+        dispatch(setStatusAC("loading"))
         todolistsAPI.getTodolists().then(res => {
             dispatch(getTodolistsAC(res.data))
+            dispatch(setStatusAC("succeeded"))
         })
     }
 }
@@ -91,8 +94,10 @@ export const deleteTodoTC = (todolistId: string) => {
 }
 export const createTodoTC = (title: string) => {
     return (dispatch: AppThunkDispatch) => {
+        dispatch(setStatusAC("loading"))
         todolistsAPI.createTodolist(title).then(res => {
             dispatch(createTodolistAC(res.data.data.item))
+            dispatch(setStatusAC("succeeded"))
         })
     }
 }
