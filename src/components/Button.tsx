@@ -6,15 +6,17 @@ type ButtonPropsType = {
     title: string
     onClickHandler?: () => void
     className?: string
+    disabled?: boolean
+
 }
 export const Button = (props: ButtonPropsType) => {
     return (
-        <StyledButton className={props.className} onClick={props.onClickHandler}>{props.title}</StyledButton>
+        <StyledButton disabled={props.disabled} className={props.className}
+                      onClick={props.onClickHandler}>{props.title}</StyledButton>
     );
 };
 
 const StyledButton = styled.button`
-    border: none;
     padding: 5px;
     border-radius: 4px;
     border: 2px solid #c3d1d9;
@@ -33,5 +35,12 @@ const StyledButton = styled.button`
         background-color: #f5b061;
         border: 2px solid #f5b061;
 
+    }
+
+    &:disabled {
+        background-color: gray;
+        border: 2px solid gray;
+        color: white;
+        cursor: auto;
     }
 `

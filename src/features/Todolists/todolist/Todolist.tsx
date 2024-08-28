@@ -70,14 +70,16 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     return (
         <FlexWrapper>
             <StyledTodolist>
-                <Button onClickHandler={deleteTodo} title={"Delete Todolist"}/>
+                <Button onClickHandler={deleteTodo} title={"Delete Todolist"}
+                        disabled={todolist.entityStatus === "loading"}/>
                 <h1><EditableSpan oldTitle={todolist.title} callBack={changeTodolistTitle}/></h1>
                 <AddItemForm addItem={addItemTask}/>
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>
                             {tasksTodolist.map(m => <Task key={m.id} changeStatus={changeStatus} removeTask={removeTask}
-                                                          changeTaskTitle={changeTaskTitle} id={todolist.id} tasksTodolist={m}/>
+                                                          changeTaskTitle={changeTaskTitle} id={todolist.id}
+                                                          tasksTodolist={m}/>
                             )}
                         </ul>
                     )}
