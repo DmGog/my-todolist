@@ -1,10 +1,11 @@
 import {
     createTodolistAC,
-    changeTodolistFilterActionAC, updateTodolistTitleAC,
+    changeTodolistFilterAC, updateTodolistTitleAC,
     deleteTodolistAC, getTodolistsAC, TodolistDomainType,
-    todolistsReducer
+    todolistsReducer, changeTodolistEntityStatusAC
 } from "./todolists-reducer"
 import {v1} from "uuid"
+import {RequestStatusType} from "../../../AppWithRedux/app-reducer";
 
 
 test("correct todolist should be removed", () => {
@@ -12,8 +13,8 @@ test("correct todolist should be removed", () => {
     let todolistId2 = v1()
 
     const startState: TodolistDomainType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
     const action = deleteTodolistAC(todolistId1)
@@ -29,8 +30,8 @@ test("correct todolist should be added", () => {
     let todolistId2 = v1()
 
     const startState: TodolistDomainType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
     const endState = todolistsReducer(startState, createTodolistAC({
@@ -49,8 +50,8 @@ test("correct todolist should change its name", () => {
     let todolistId2 = v1()
 
     const startState: TodolistDomainType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
     const action = updateTodolistTitleAC(todolistId2, "New Todolist")
@@ -66,11 +67,11 @@ test("correct filter of todolist should be changed", () => {
     let todolistId2 = v1()
 
     const startState: TodolistDomainType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
-    const action = changeTodolistFilterActionAC(todolistId2, "completed")
+    const action = changeTodolistFilterAC(todolistId2, "completed")
 
     const endState = todolistsReducer(startState, action)
 
@@ -78,13 +79,13 @@ test("correct filter of todolist should be changed", () => {
     expect(endState[1].filter).toBe(action.payload.filter)
 })
 
-test("set todolists ", () => {
+test("set todolists", () => {
 
     let todolistId1 = v1()
     let todolistId2 = v1()
     const startState: TodolistDomainType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0,entityStatus: "idle"},
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
     const action = getTodolistsAC(startState)
@@ -92,5 +93,24 @@ test("set todolists ", () => {
     const endState = todolistsReducer([], action)
 
     expect(endState.length).toBe(2)
+
+})
+test("correct entity status", () => {
+
+    let todolistId1 = v1()
+    let todolistId2 = v1()
+    const startState: TodolistDomainType[] = [
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
+    ]
+
+    const newStatus: RequestStatusType = "loading"
+
+    const action = changeTodolistEntityStatusAC(todolistId1, newStatus)
+
+    const endState = todolistsReducer(startState, action)
+
+    expect(endState[0].entityStatus).toBe(newStatus)
+    expect(endState[1].entityStatus).toBe("idle")
 
 })

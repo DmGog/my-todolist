@@ -4,10 +4,11 @@ import {useAddItemForm} from "./hooks/useAddItemForm";
 
 type AddItemType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemType) => {
-    const {addItem} = props
+    const {addItem, disabled = false} = props
 
     const {newTitle, onChangeHandler, error, onKeyPressHandler, addItems} = useAddItemForm(addItem)
 
@@ -16,8 +17,9 @@ export const AddItemForm = React.memo((props: AddItemType) => {
                onChange={onChangeHandler}
                value={newTitle}
                className={error ? "error" : ""}
+               disabled={disabled}
         />
-        <Button title={"+"} onClickHandler={addItems}/>
+        <Button title={"+"} onClickHandler={addItems} disabled={disabled}/>
         {error && <div className={"error-message"}>Field is required</div>}
     </div>
 })

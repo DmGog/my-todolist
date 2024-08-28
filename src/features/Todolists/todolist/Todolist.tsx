@@ -73,7 +73,7 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
                 <Button onClickHandler={deleteTodo} title={"Delete Todolist"}
                         disabled={todolist.entityStatus === "loading"}/>
                 <h1><EditableSpan oldTitle={todolist.title} callBack={changeTodolistTitle}/></h1>
-                <AddItemForm addItem={addItemTask}/>
+                <AddItemForm addItem={addItemTask} disabled={todolist.entityStatus === "loading"}/>
                 <StyledTask>
                     {myTasks.length === 0 ? <p>There are no tasks</p> : (
                         <ul>

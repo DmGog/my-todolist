@@ -5,7 +5,7 @@ import {GlobalStyled} from "../styles/GlobalStyled";
 import {v1} from "uuid";
 import {AddItemForm} from "../components/AddItenForm/AddItemForm";
 import {
-    changeTodolistFilterActionAC,
+    changeTodolistFilterAC,
     createTodolistAC,
     deleteTodolistAC,
     FilterType,
@@ -82,7 +82,7 @@ function AppWithReducers() {
     }
 
     function changeFilter(filter: FilterType, todolistId: string) {
-        dispatchToTodolistsReducer(changeTodolistFilterActionAC(todolistId, filter))
+        dispatchToTodolistsReducer(changeTodolistFilterAC(todolistId, filter))
     }
 
     /*                      tasks                     */

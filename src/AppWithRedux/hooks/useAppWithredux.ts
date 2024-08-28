@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../store";
 import {useCallback, useEffect} from "react";
 import {
-    changeTodolistFilterActionAC,
+    changeTodolistFilterAC,
     getTodosTC,
     FilterType,
     TodolistDomainType,
@@ -42,7 +42,7 @@ export const useAppWithredux = () => {
     }, [dispatch])
 
     const changeFilter = useCallback((filter: FilterType, todolistId: string) => {
-        dispatch(changeTodolistFilterActionAC(todolistId, filter))
+        dispatch(changeTodolistFilterAC(todolistId, filter))
     }, [dispatch])
 
     /*                      tasks                     */
