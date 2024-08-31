@@ -27,15 +27,15 @@ function App() {
     } = useAppWithredux()
 
     const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
-
     return (
         <div className="App">
             <GlobalStyled/>
-            {status === "loading" && (
-                <div style={{position: "absolute", top: 0, left: 0, right: 0}}>
-                    <LinearProgress/>
-                </div>
-            )}
+            {status === "loading" &&
+                (
+                    <div style={{position: "absolute", top: 0, left: 0, right: 0}}>
+                        <LinearProgress/>
+                    </div>
+                )}
             <ErrorSnackBar/>
             <AddItemForm addItem={addTodolist}/>
 

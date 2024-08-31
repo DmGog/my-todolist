@@ -68,7 +68,14 @@ export type RemoveAllTasksActionType = ReturnType<typeof removeAllTasksAC>
 export type CreateTaskAT = ReturnType<typeof createTaskAC>
 export type UpdateTaskAT = ReturnType<typeof updateTaskAC>
 export type SetTasksTodolistAT = ReturnType<typeof getTasksTodolistAC>
-
+type UpdateDomainTaskModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
+}
 
 type ActionsType =
     DeleteTaskAT
@@ -113,13 +120,22 @@ export const getTasksTC = (todolistId: string) => {
         todolistsAPI.getTodolistTasks(todolistId).then(res => {
             dispatch(getTasksTodolistAC(todolistId, res.data.items))
             dispatch(setAppStatusAC("succeeded"))
+        }).catch((error) => {
+            handleServerNetworkError(error, dispatch)
         })
     }
 }
 export const deleteTaskTC = (todolistId: string, taskId: string) => {
     return (dispatch: AppThunkDispatch) => {
+        dispatch(setAppStatusAC("loading"))
         todolistsAPI.deleteTodolistTask(todolistId, taskId).then(res => {
+            if (res.data.resultCode !== 0) {
+                handleServerAppError(res.data, dispatch)
+            }
             dispatch(deleteTaskAC(taskId, todolistId))
+            dispatch(setAppStatusAC("succeeded"))
+        }).catch((error) => {
+            handleServerNetworkError(error, dispatch)
         })
     }
 }
@@ -137,14 +153,7 @@ export const createTaskTC = (todolistId: string, title: string) => {
         })
     }
 }
-type UpdateDomainTaskModelType = {
-    title?: string
-    description?: string
-    status?: TaskStatuses
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
-}
+
 export const updateTaskTC = (todolistId: string, taskId: string, modelDomain: UpdateDomainTaskModelType) => {
     return (dispatch: AppThunkDispatch, getState: () => AppRootState) => {
 

@@ -1,5 +1,5 @@
 import {setAppErrorAC, setAppStatusAC} from "../AppWithRedux/app-reducer";
-import {ResponseTaskType} from "../api/todolists-a-p-i";
+import {ResponseTaskType, ResponseType} from "../api/todolists-a-p-i";
 import {AppThunkDispatch} from "../AppWithRedux/store";
 
 export const handleServerAppError = <T>(data: ResponseTaskType<T>, dispatch: AppThunkDispatch) => {
@@ -12,4 +12,9 @@ export const handleServerNetworkError = (error: { message: string }, dispatch: A
     dispatch(setAppErrorAC("failed"))
 
 
+}
+
+export const handleServerAppErrorTodo = <D>(data: ResponseType<D>, dispatch: AppThunkDispatch) => {
+    dispatch(setAppErrorAC(data.messages[0]))
+    dispatch(setAppStatusAC("failed"))
 }
