@@ -6,8 +6,8 @@ import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./task/Task";
 import {FilterType, TodolistDomainType} from "./todolists-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolists-a-p-i";
-import {useAppDispatch} from "../../../AppWithRedux/store";
 import {getTasksTC} from "./task/tasks-reducer";
+import {useAppDispatch} from "../../../App/store";
 
 
 type TodolistPropsType = {

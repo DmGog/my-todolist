@@ -6,9 +6,10 @@ import {
     todolistsAPI,
     UpdateTaskModelType
 } from "../../../../api/todolists-a-p-i";
-import {AppRootState, AppThunkDispatch} from "../../../../AppWithRedux/store";
-import {setAppErrorAC, setAppStatusAC} from "../../../../AppWithRedux/app-reducer";
+
 import {handleServerAppError, handleServerNetworkError} from "../../../../utils/error-utils";
+import {AppRootState, AppThunkDispatch} from "../../../../App/store";
+import {setAppStatusAC} from "../../../../App/app-reducer";
 
 
 export type TaskStateType = { [key: string]: TaskType[] }

@@ -2,47 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./AppWithRedux/App";
 import {Provider} from "react-redux";
-import {store} from "./AppWithRedux/store";
-import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import {Login} from "./features/Login/Login";
-import {TodolistList} from "./features/Todolists/TodolistList";
-import {ErrorPage} from "./components/ErrorPage/ErrorPage";
+import {store} from "./App/store";
+import App from "./App/App";
 
-
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App/>,
-        errorElement: <Navigate to="/404"/>,
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/todolists"/>
-            },
-            {
-                path: "/login",
-                element: <Login/>,
-            },
-            {
-                path: "/todolists",
-                element: <TodolistList/>,
-            },
-        ],
-    },
-    {
-        path: "/404",
-        element: <ErrorPage/>
-    },
-]);
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
 root.render(
     <Provider store={store}>
-        <RouterProvider router={router}/>
+        <App/>
     </Provider>
 );
 

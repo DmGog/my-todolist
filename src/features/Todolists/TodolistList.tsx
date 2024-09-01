@@ -1,7 +1,10 @@
-import {useAppWithredux} from "../../AppWithRedux/hooks/useAppWithredux";
+import {useTodolist} from "./todolist/hooks/useTodolist";
 import {AddItemForm} from "../../components/AddItenForm/AddItemForm";
 import {Todolist} from "./todolist/Todolist";
 import React from "react";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
+import {AppRootState} from "../../App/store";
 
 export const TodolistList = () => {
     const {
@@ -16,7 +19,13 @@ export const TodolistList = () => {
         todolists,
         changeFilter,
         addTodolist
-    } = useAppWithredux()
+    } = useTodolist()
+
+    const isLoggedIn = useSelector<AppRootState>(state => state.auth.isLoggedIn)
+
+    if (!isLoggedIn) {
+        return <Navigate to={"/login"}/>
+    }
 
     return (<>
             <AddItemForm addItem={addTodolist}/>

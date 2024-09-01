@@ -1,5 +1,4 @@
 import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "../store";
 import {useCallback, useEffect} from "react";
 import {
     changeTodolistFilterAC,
@@ -9,22 +8,24 @@ import {
     deleteTodoTC,
     createTodoTC,
     updateTodoTitleTC
-} from "../../features/Todolists/todolist/todolists-reducer";
+} from "../todolists-reducer";
 import {
     createTaskTC,
     removeAllTasksAC,
     deleteTaskTC, TaskStateType, updateTaskTC
-} from "../../features/Todolists/todolist/task/tasks-reducer";
-import {TaskStatuses} from "../../api/todolists-a-p-i";
+} from "../task/tasks-reducer";
+import {TaskStatuses} from "../../../../api/todolists-a-p-i";
+import {AppRootState, useAppDispatch} from "../../../../App/store";
 
 
-export const useAppWithredux = () => {
+export const useTodolist = () => {
     const dispatch = useAppDispatch()
     const todolists = useSelector<AppRootState, TodolistDomainType[]>((state) => state.todolists)
     const myTasks = useSelector<AppRootState, TaskStateType>((state) => state.tasks)
 
 
     useEffect(() => {
+
         dispatch(getTodosTC())
     }, []);
 

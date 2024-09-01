@@ -1,8 +1,7 @@
 import {todolistsAPI, TodolistType} from "../../../api/todolists-a-p-i";
-import {AppThunkDispatch} from "../../../AppWithRedux/store";
-import {RequestStatusType, setAppStatusAC} from "../../../AppWithRedux/app-reducer";
 import {handleServerAppError, handleServerAppErrorTodo, handleServerNetworkError} from "../../../utils/error-utils";
-
+import {RequestStatusType, setAppStatusAC} from "../../../App/app-reducer";
+import {AppThunkDispatch} from "../../../App/store";
 
 const initialState: TodolistDomainType[] = []
 

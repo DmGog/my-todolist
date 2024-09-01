@@ -5,7 +5,8 @@ import {
     todolistsReducer, changeTodolistEntityStatusAC
 } from "./todolists-reducer"
 import {v1} from "uuid"
-import {RequestStatusType} from "../../../AppWithRedux/app-reducer";
+import {RequestStatusType} from "../../../App/app-reducer";
+
 
 
 test("correct todolist should be removed", () => {

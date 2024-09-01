@@ -2,8 +2,9 @@ import * as React from "react";
 import Snackbar, {SnackbarCloseReason} from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../AppWithRedux/store";
-import {setAppErrorAC} from "../../AppWithRedux/app-reducer";
+import {AppRootState} from "../../App/store";
+import {setAppErrorAC} from "../../App/app-reducer";
+
 
 export const ErrorSnackBar = () => {
 
