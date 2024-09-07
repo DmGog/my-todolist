@@ -8,6 +8,10 @@ import {FilterType, TodolistDomainType} from "./todolists-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolists-a-p-i";
 import {getTasksTC} from "./task/tasks-reducer";
 import {useAppDispatch} from "../../../App/store";
+import {IconButton} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+
+
 
 
 type TodolistPropsType = {
@@ -70,8 +74,9 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     return (
         <FlexWrapper>
             <StyledTodolist>
-                <Button onClickHandler={deleteTodo} title={"Delete Todolist"}
-                        disabled={todolist.entityStatus === "loading"}/>
+                <IconButton onClick={deleteTodo} disabled={todolist.entityStatus === "loading"} aria-label="delete">
+                    <Delete/>
+                </IconButton>
                 <h1><EditableSpan oldTitle={todolist.title} callBack={changeTodolistTitle}/></h1>
                 <AddItemForm addItem={addItemTask} disabled={todolist.entityStatus === "loading"}/>
                 <StyledTask>
