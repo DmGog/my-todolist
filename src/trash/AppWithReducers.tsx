@@ -66,58 +66,60 @@ function AppWithReducers() {
     })
 
     const deleteTodolist = (todolistId: string) => {
-        const action = deleteTodolistAC(todolistId)
+        const action = deleteTodolistAC({id: todolistId})
         dispatchToTodolistsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function addTodolist(title: string) {
-        const action = createTodolistAC({id: v1(), title, addedDate: "", order: 0})
+        const action = createTodolistAC({todolist: {id: v1(), title, addedDate: "", order: 0}})
         dispatchToTodolistsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function changeTodoTitle(newTitle: string, todolistId: string) {
-        dispatchToTodolistsReducer(updateTodolistTitleAC(todolistId, newTitle))
+        dispatchToTodolistsReducer(updateTodolistTitleAC({id: todolistId, title: newTitle}))
     }
 
     function changeFilter(filter: FilterType, todolistId: string) {
-        dispatchToTodolistsReducer(changeTodolistFilterAC(todolistId, filter))
+        dispatchToTodolistsReducer(changeTodolistFilterAC({id: todolistId, filter}))
     }
 
     /*                      tasks                     */
     const onDeleteAllTask = (todolistId: string) => {
-        dispatchToTasksReducer(removeAllTasksAC(todolistId))
+        dispatchToTasksReducer(removeAllTasksAC({todolistId}))
     }
 
     const addTask = (title: string, todolistId: string) => {
         const action = createTaskAC({
-            id: todolistId,
-            title,
-            status: TaskStatuses.Completed,
-            todoListId: todolistId,
-            description: "",
-            startDate: "",
-            deadline: "",
-            addedDate: "",
-            order: 0,
-            priority: TaskPriorities.Hi,
+            task: {
+                id: todolistId,
+                title,
+                status: TaskStatuses.Completed,
+                todoListId: todolistId,
+                description: "",
+                startDate: "",
+                deadline: "",
+                addedDate: "",
+                order: 0,
+                priority: TaskPriorities.Hi,
+            }
         })
         dispatchToTasksReducer(action)
     }
 
     const removeTask = (taskId: string, todolistId: string) => {
-        const action = deleteTaskAC(taskId, todolistId)
+        const action = deleteTaskAC({taskId, todolistId})
         dispatchToTasksReducer(action)
     }
 
     function changeStatus(taskId: string, status: TaskStatuses, todolistId: string) {
-        const action = updateTaskAC(taskId, {status}, todolistId)
+        const action = updateTaskAC({taskId, model: {status}, todolistId})
         dispatchToTasksReducer(action)
     }
 
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
-        const action = updateTaskAC(taskId, {title: newTitle}, todolistId)
+        const action = updateTaskAC({taskId, model: {title: newTitle}, todolistId})
         dispatchToTasksReducer(action)
     }
 

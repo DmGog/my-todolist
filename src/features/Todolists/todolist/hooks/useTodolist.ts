@@ -43,13 +43,12 @@ export const useTodolist = () => {
     }, [dispatch])
 
     const changeFilter = useCallback((filter: FilterType, todolistId: string) => {
-        dispatch(changeTodolistFilterAC(todolistId, filter))
+        dispatch(changeTodolistFilterAC({id: todolistId, filter}))
     }, [dispatch])
 
     /*                      tasks                     */
     const onDeleteAllTask = useCallback((todolistId: string) => {
-        dispatch(removeAllTasksAC(todolistId))
-        // dispatch(deleteAllTaskTC(todolistId))
+        dispatch(removeAllTasksAC({todolistId}))
     }, [dispatch])
 
     const createTask = useCallback((title: string, todolistId: string) => {
