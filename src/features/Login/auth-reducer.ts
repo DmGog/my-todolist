@@ -2,6 +2,7 @@ import {authAPI, LoginParamsType} from "../../api/todolists-a-p-i";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {AppThunkDispatch} from "../../App/store";
 import {setAppStatusAC} from "../../App/app-reducer";
+import {clearTodosData} from "../Todolists/todolist/todolists-reducer";
 
 const initialState: InitialStateType = {
     isLoggedIn: false,
@@ -52,6 +53,7 @@ export const logoutTC = () => (dispatch: AppThunkDispatch) => {
         if (res.data.resultCode === 0) {
             dispatch(authAC(false))
             dispatch(setAppStatusAC("succeeded"))
+            dispatch(clearTodosData())
         } else {
             dispatch(setAppStatusAC("failed"))
             handleServerAppError(res.data, dispatch)

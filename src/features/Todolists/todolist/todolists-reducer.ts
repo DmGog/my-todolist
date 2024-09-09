@@ -2,6 +2,7 @@ import {todolistsAPI, TodolistType} from "../../../api/todolists-a-p-i";
 import {handleServerAppError, handleServerAppErrorTodo, handleServerNetworkError} from "../../../utils/error-utils";
 import {RequestStatusType, setAppStatusAC} from "../../../App/app-reducer";
 import {AppThunkDispatch} from "../../../App/store";
+import {getTasksTC} from "./task/tasks-reducer";
 
 const initialState: TodolistDomainType[] = []
 
@@ -34,6 +35,9 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
                 return tl.id === action.payload.todoId ? {...tl, entityStatus: action.payload.status} : tl
             })
         }
+        case "CLEAR-TODOLISTS":{
+            return []
+        }
 
         default:
             return state
@@ -59,7 +63,7 @@ type ActionsType =
     | DeleteTodolistAT
     | CreateTodolistAT
     | UpdateTodolistTitleAT
-    | ChangeTodolistFilterActionType | SetTodosAT | ChangeTodolistEntityStatusAT
+    | ChangeTodolistFilterActionType | SetTodosAT | ChangeTodolistEntityStatusAT | ClearTodosActionType
 
 
 // action creator
@@ -87,17 +91,30 @@ export const changeTodolistEntityStatusAC = (todoId: string, status: RequestStat
         }
     } as const)
 
+export const clearTodosData = () => ({
+    type: "CLEAR-TODOLISTS"
+} as const)
+export type ClearTodosActionType = ReturnType<typeof clearTodosData>
+
 // ------------------ thunk
 
 export const getTodosTC = () => {
     return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"))
-        todolistsAPI.getTodolists().then(res => {
-            dispatch(getTodolistsAC(res.data))
-            dispatch(setAppStatusAC("succeeded"))
-        }).catch((error) => {
-            handleServerNetworkError(error, dispatch)
-        })
+        todolistsAPI.getTodolists()
+            .then(res => {
+                dispatch(getTodolistsAC(res.data))
+                dispatch(setAppStatusAC("succeeded"))
+                return res.data
+            })
+            .then((todos) => {
+                todos.forEach((todo) => {
+                    dispatch(getTasksTC(todo.id))
+                })
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
+            })
     }
 }
 export const deleteTodoTC = (todolistId: string) => {

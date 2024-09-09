@@ -1,4 +1,10 @@
-import {CreateTodolistAT, DeleteTodolistAT, SetTodosAT, TodolistDomainType} from "../todolists-reducer";
+import {
+    ClearTodosActionType,
+    CreateTodolistAT,
+    DeleteTodolistAT,
+    SetTodosAT,
+    TodolistDomainType
+} from "../todolists-reducer";
 import {
     TaskPriorities,
     TaskStatuses,
@@ -56,6 +62,10 @@ export const tasksReducer = (state: TaskStateType = initialState, action: Action
         case "SET-TASKS": {
             return {...state, [action.payload.todolistId]: action.payload.tasks}
         }
+
+        case "CLEAR-TODOLISTS":{
+            return {}
+        }
         default:
             return state
     }
@@ -86,7 +96,7 @@ type ActionsType =
     | DeleteTodolistAT
     | RemoveAllTasksActionType
     | SetTodosAT
-    | SetTasksTodolistAT
+    | SetTasksTodolistAT|ClearTodosActionType
 
 
 // action creator
@@ -140,6 +150,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => {
         })
     }
 }
+
 export const createTaskTC = (todolistId: string, title: string) => {
     return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"))
