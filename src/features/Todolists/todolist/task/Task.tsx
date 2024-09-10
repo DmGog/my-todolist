@@ -1,7 +1,9 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
-import {Button} from "../../../../components/Button";
 import {TaskStatuses, TaskType} from "../../../../api/todolists-a-p-i";
+import {Delete} from "@mui/icons-material";
+import {IconButton} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 
 type TaskPropsType = {
     changeStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
@@ -21,16 +23,14 @@ export const Task = React.memo((props: TaskPropsType) => {
         changeTaskTitle(tasksTodolist.id, newTitle, id)
     }, [changeTaskTitle, id, tasksTodolist])
     return (
-        <li key={tasksTodolist.id}>
-            <input type={"checkbox"} checked={tasksTodolist.status === TaskStatuses.Completed}
-                   onChange={onChangeHandlerIsDone}
-
-            />
+        <li key={tasksTodolist.id} style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+            <Checkbox defaultChecked color="success"  checked={tasksTodolist.status === TaskStatuses.Completed} onChange={onChangeHandlerIsDone}/>
             <EditableSpan className={tasksTodolist.status === TaskStatuses.Completed ? "is-done" : ""}
                           oldTitle={tasksTodolist.title}
                           callBack={onChangeTitleHandler}/>
-            <Button title={"X"} onClickHandler={onRemoveTask}/>
-
+            <IconButton onClick={onRemoveTask} aria-label="delete">
+                <Delete/>
+            </IconButton>
         </li>
     )
 })

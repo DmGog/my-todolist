@@ -1,7 +1,6 @@
 import {
     createTaskAC,
     updateTaskAC,
-    removeAllTasksAC,
     deleteTaskAC,
     getTasksTodolistAC,
     tasksReducer,
@@ -624,94 +623,6 @@ test("property with todolistId should be deleted", () => {
 
     expect(keys.length).toBe(1)
     expect(endState["todolistId2"]).not.toBeDefined()
-})
-
-test("correct remove all tasks in todolist", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {
-                id: "1",
-                title: "CSS",
-                status: TaskStatuses.New,
-                todoListId: "todolistId1",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            },
-            {
-                id: "2",
-                title: "JS",
-                status: TaskStatuses.Completed,
-                todoListId: "todolistId1",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            },
-            {
-                id: "3",
-                title: "React",
-                status: TaskStatuses.New,
-                todoListId: "todolistId1",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            }
-        ],
-        "todolistId2": [
-            {
-                id: "1",
-                title: "bread",
-                status: TaskStatuses.New,
-                todoListId: "todolistId2",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            },
-            {
-                id: "2",
-                title: "milk",
-                status: TaskStatuses.Completed,
-                todoListId: "todolistId2",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            },
-            {
-                id: "3",
-                title: "tea",
-                status: TaskStatuses.New,
-                todoListId: "todolistId2",
-                description: "",
-                startDate: "",
-                deadline: "",
-                addedDate: "",
-                order: 0,
-                priority: TaskPriorities.Hi,
-            }
-        ]
-    }
-
-    const action = removeAllTasksAC({todolistId: "todolistId2"})
-
-    const endState = tasksReducer(startState, action)
-
-    expect(endState["todolistId2"].length).toBe(0)
-
 })
 
 test("tasks should be added for todolist", () => {

@@ -1,6 +1,8 @@
 import React from "react";
-import {Button} from "../Button";
 import {useAddItemForm} from "./hooks/useAddItemForm";
+import Button from "@mui/material/Button";
+import {Icon} from "@mui/material";
+
 
 type AddItemType = {
     addItem: (title: string) => void
@@ -19,7 +21,9 @@ export const AddItemForm = React.memo((props: AddItemType) => {
                className={error ? "error" : ""}
                disabled={disabled}
         />
-        <Button title={"+"} onClickHandler={addItems} disabled={disabled}/>
+        {/* eslint-disable-next-line react/jsx-no-undef */}
+        <Button style={{minWidth: "10px", padding: "0 10px"}} variant="outlined" onClick={addItems}
+                disabled={disabled}>+</Button>
         {error && <div className={"error-message"}>Field is required</div>}
     </div>
 })

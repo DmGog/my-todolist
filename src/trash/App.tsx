@@ -134,7 +134,6 @@ function App() {
                                  changeFilter={changeFilteredTask}
                                  removeTask={removeTask}
                                  addTask={addTask}
-                                 onDeleteAllTask={onDeleteAllTask}
                                  changeStatus={changeStatus}
                                  deleteTodolist={deleteTodolist}
                                  changeTaskTitle={changeTaskTitle}

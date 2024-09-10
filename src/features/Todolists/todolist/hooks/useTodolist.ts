@@ -11,7 +11,6 @@ import {
 } from "../todolists-reducer";
 import {
     createTaskTC,
-    removeAllTasksAC,
     deleteTaskTC, TaskStateType, updateTaskTC
 } from "../task/tasks-reducer";
 import {TaskStatuses} from "../../../../api/todolists-a-p-i";
@@ -47,9 +46,6 @@ export const useTodolist = () => {
     }, [dispatch])
 
     /*                      tasks                     */
-    const onDeleteAllTask = useCallback((todolistId: string) => {
-        dispatch(removeAllTasksAC({todolistId}))
-    }, [dispatch])
 
     const createTask = useCallback((title: string, todolistId: string) => {
         dispatch(createTaskTC(todolistId, title))
@@ -75,7 +71,6 @@ export const useTodolist = () => {
         addTodolist: createTodo,
         changeTodoTitle: updateTodoTitle,
         changeFilter,
-        onDeleteAllTask,
         addTask: createTask,
         removeTask: deleteTask,
         changeStatus: updateTaskStatus,

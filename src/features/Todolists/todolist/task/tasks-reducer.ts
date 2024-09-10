@@ -54,16 +54,11 @@ const slice = createSlice({
                 tasks[index] = {...tasks[index], ...action.payload.model}
             }
         },
-        removeAllTasksAC(state, action: PayloadAction<{ todolistId: string }>) {
-            state[action.payload.todolistId] = []
-        },
         getTasksTodolistAC(state, action: PayloadAction<{
             todolistId: string, tasks: TaskType[]
         }>) {
             state[action.payload.todolistId] = action.payload.tasks
         }
-
-
     },
     extraReducers: builder => {
         builder.addCase(createTodolistAC, (state, action) => {
@@ -86,9 +81,7 @@ const slice = createSlice({
 
 export const tasksReducer = slice.reducer
 
-export const {deleteTaskAC, getTasksTodolistAC, updateTaskAC, removeAllTasksAC, createTaskAC} = slice.actions
-//----------------thunk
-
+export const {deleteTaskAC, getTasksTodolistAC, updateTaskAC,  createTaskAC} = slice.actions
 
 export const getTasksTC = (todolistId: string) => {
     return (dispatch: AppThunkDispatch) => {

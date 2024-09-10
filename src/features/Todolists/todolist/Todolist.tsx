@@ -16,7 +16,6 @@ type TodolistPropsType = {
     changeFilter: (filter: FilterType, todolistId: string) => void
     removeTask: (taskId: string, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
-    onDeleteAllTask: (todolistId: string) => void
     changeStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
     deleteTodolist: (todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
@@ -30,7 +29,6 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
         changeFilter,
         removeTask,
         addTask,
-        onDeleteAllTask,
         changeStatus,
         deleteTodolist,
         changeTaskTitle,
@@ -49,7 +47,6 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     const onActiveClickHandler = useCallback(() => changeFilter("active", todolist.id), [changeFilter, todolist.id])
     const onCompletedClickHandler = useCallback(() => changeFilter("completed", todolist.id), [changeFilter, todolist.id])
 
-    const allDeleteTasks = () => onDeleteAllTask(todolist.id)
     const deleteTodo = () => deleteTodolist(todolist.id)
 
     const addItemTask = useCallback((title: string) => {
@@ -88,7 +85,6 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
                     <Button className={todolist.filter === "completed" ? "active-filter" : ""} title={"COMPLETED"}
                             onClickHandler={onCompletedClickHandler}/>
                 </ButtonWrapper>
-                <Button title={"delete all task"} onClickHandler={allDeleteTasks}/>
             </StyledTodolist>
         </FlexWrapper>
     );

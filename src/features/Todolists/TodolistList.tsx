@@ -14,7 +14,6 @@ export const TodolistList = () => {
         changeTodoTitle,
         addTask,
         myTasks,
-        onDeleteAllTask,
         deleteTodolist,
         todolists,
         changeFilter,
@@ -39,7 +38,6 @@ export const TodolistList = () => {
                                      changeFilter={changeFilter}
                                      removeTask={removeTask}
                                      addTask={addTask}
-                                     onDeleteAllTask={onDeleteAllTask}
                                      changeStatus={changeStatus}
                                      deleteTodolist={deleteTodolist}
                                      changeTaskTitle={changeTaskTitle}
