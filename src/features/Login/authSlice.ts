@@ -1,8 +1,8 @@
 import {authAPI, LoginParamsType} from "../../api/todolists-a-p-i";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {AppThunkDispatch} from "../../App/store";
-import {setAppStatusAC} from "../../App/app-reducer";
-import {clearTodosData} from "../Todolists/todolist/todolists-reducer";
+import {setAppStatusAC} from "../../App/appSlice";
+import {clearTodosData} from "../Todolists/todolist/todolistsSlice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {

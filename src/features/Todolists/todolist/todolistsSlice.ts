@@ -1,9 +1,9 @@
 import {todolistsAPI, TodolistType} from "../../../api/todolists-a-p-i";
 import {handleServerAppError, handleServerAppErrorTodo, handleServerNetworkError} from "../../../utils/error-utils";
-import {RequestStatusType, setAppStatusAC} from "../../../App/app-reducer";
+import {RequestStatusType, setAppStatusAC} from "../../../App/appSlice";
 import {AppThunkDispatch} from "../../../App/store";
-import {getTasksTC} from "./task/tasks-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {fetchTasks} from "./task/tasksSlice";
 
 const initialState: TodolistDomainType[] = []
 export type TodolistDomainType = TodolistType & { filter: FilterType, entityStatus: RequestStatusType }
@@ -73,7 +73,7 @@ export const getTodosTC = () => {
             })
             .then((todos) => {
                 todos.forEach((todo) => {
-                    dispatch(getTasksTC(todo.id))
+                    dispatch(fetchTasks(todo.id))
                 })
             })
             .catch((error) => {
@@ -128,8 +128,3 @@ export const updateTodoTitleTC = (todolistId: string, title: string) => {
         })
     }
 }
-
-export type CreateTodolistAT = ReturnType<typeof createTodolistAC>
-export type DeleteTodolistAT = ReturnType<typeof deleteTodolistAC>
-export type SetTodosAT = ReturnType<typeof getTodolistsAC>
-export type ClearTodosActionType = ReturnType<typeof clearTodosData>

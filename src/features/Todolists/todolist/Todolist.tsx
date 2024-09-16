@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {AddItemForm} from "../../../components/AddItenForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./task/Task";
-import {FilterType, TodolistDomainType} from "./todolists-reducer";
+import {FilterType, TodolistDomainType} from "./todolistsSlice";
 import {TaskStatuses, TaskType} from "../../../api/todolists-a-p-i";
 import {IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";

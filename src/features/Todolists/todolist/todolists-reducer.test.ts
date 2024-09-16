@@ -3,9 +3,9 @@ import {
     changeTodolistFilterAC, updateTodolistTitleAC,
     deleteTodolistAC, getTodolistsAC, TodolistDomainType,
     todolistsReducer, changeTodolistEntityStatusAC
-} from "./todolists-reducer"
+} from "./todolistsSlice"
 import {v1} from "uuid"
-import {RequestStatusType} from "../../../App/app-reducer";
+import {RequestStatusType} from "../../../App/appSlice";
 
 
 test("correct todolist should be removed", () => {

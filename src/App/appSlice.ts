@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/todolists-a-p-i";
-import {authAC} from "../features/Login/auth-reducer";
+import {authAC} from "../features/Login/authSlice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: InitialStateType = {

@@ -2,17 +2,14 @@ import {useSelector} from "react-redux";
 import {useCallback, useEffect} from "react";
 import {
     changeTodolistFilterAC,
-    getTodosTC,
-    FilterType,
-    TodolistDomainType,
-    deleteTodoTC,
     createTodoTC,
+    deleteTodoTC,
+    FilterType,
+    getTodosTC,
+    TodolistDomainType,
     updateTodoTitleTC
-} from "../todolists-reducer";
-import {
-    createTaskTC,
-    deleteTaskTC, TaskStateType, updateTaskTC
-} from "../task/tasks-reducer";
+} from "../todolistsSlice";
+import {createTaskTC, removeTask, TaskStateType, updateTaskTC} from "../task/tasksSlice";
 import {TaskStatuses} from "../../../../api/todolists-a-p-i";
 import {AppRootState, useAppDispatch} from "../../../../App/store";
 
@@ -24,7 +21,6 @@ export const useTodolist = () => {
 
 
     useEffect(() => {
-
         dispatch(getTodosTC())
     }, []);
 
@@ -52,7 +48,7 @@ export const useTodolist = () => {
     }, [dispatch])
 
     const deleteTask = useCallback((taskId: string, todolistId: string) => {
-            dispatch(deleteTaskTC(todolistId, taskId))
+            dispatch(removeTask({taskId, todolistId}))
         }, [dispatch]
     )
 

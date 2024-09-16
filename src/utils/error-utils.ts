@@ -1,6 +1,6 @@
 import {ResponseTaskType, ResponseType} from "../api/todolists-a-p-i";
 import {AppThunkDispatch} from "../App/store";
-import {setAppErrorAC, setAppStatusAC} from "../App/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "../App/appSlice";
 
 
 export const handleServerAppError = <T>(data: ResponseTaskType<T>, dispatch: AppThunkDispatch) => {

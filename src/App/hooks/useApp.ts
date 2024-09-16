@@ -1,8 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../store";
-import {initializedAppTC, RequestStatusType} from "../app-reducer";
+import {initializedAppTC, RequestStatusType} from "../appSlice";
 import {useCallback, useEffect} from "react";
-import {logoutTC} from "../../features/Login/auth-reducer";
+import {logoutTC} from "../../features/Login/authSlice";
 
 export const useApp =()=>{
     const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
