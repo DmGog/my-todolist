@@ -7,16 +7,22 @@ import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
-import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
+import {FormikHelpers, useFormik} from "formik";
+import {useSelector} from "react-redux";
 import {authTC} from "./authSlice";
 import {Navigate} from "react-router-dom";
-import {AppRootState} from "../../App/store";
+import {AppRootState, useAppDispatch} from "../../App/store";
 
+
+type FormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
 
 export const Login = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const isLoggedIn = useSelector<AppRootState>(state => state.auth.isLoggedIn)
 
@@ -34,8 +40,16 @@ export const Login = () => {
             password: "",
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(authTC(values))
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const res = await dispatch(authTC(values))
+            if (authTC.rejected.match(res)) {
+                if (res.payload?.fieldsErrors?.length) {
+                    const error = res.payload.fieldsErrors[0]
+                    //@ts-ignore
+                    formikHelpers.setFieldError(error.field, error.error)
+                } else {
+                }
+            }
         },
     });
 
