@@ -236,8 +236,12 @@ test("status of specified task should be changed", () => {
     }
 
     const param = {taskId: "2", model: {status: TaskStatuses.New}, todolistId: "todolistId2"}
-    //@ts-ignore
-    const action = updateTaskTC.fulfilled(param, "requestId", param)
+
+    const action = updateTaskTC.fulfilled(param, "requestId", {
+        todolistId: param.todolistId,
+        taskId: param.taskId,
+        modelDomain: param.model
+    })
 
     const endState = tasksReducer(startState, action)
     expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New)
@@ -325,8 +329,12 @@ test("title of specified task should be changed", () => {
     }
 
     const param = {taskId: "2", model: {title: "coffee"}, todolistId: "todolistId2"}
-//@ts-ignore
-    const action = updateTaskTC.fulfilled(param, "requestId", param)
+
+    const action = updateTaskTC.fulfilled(param, "requestId", {
+        todolistId: param.todolistId,
+        taskId: param.taskId,
+        modelDomain: param.model
+    })
 
 
     const endState = tasksReducer(startState, action)
@@ -415,9 +423,15 @@ test("new array should be added when new todolist is added", () => {
             }
         ]
     }
-
-    // @ts-ignore
-    const action = createTodoTC.fulfilled({todolist: {id: "4", title: "new todolist", order: 0, addedDate: ""}}, "",{todolist: {id: "4", title: "new todolist", order: 0, addedDate: ""}})
+    const todo = {
+        todolist: {
+            id: "4",
+            title: "new todolist",
+            order: 0,
+            addedDate: ""
+        }
+    }
+    const action = createTodoTC.fulfilled(todo, "", todo.todolist.id)
 
     const endState = tasksReducer(startState, action)
 
@@ -511,8 +525,7 @@ test("property with todolistId should be deleted", () => {
         ]
     }
 
-    // @ts-ignore
-    const action = deleteTodoTC.fulfilled({id: "todolistId2"}, "requestId", {id: "todolistId2"})
+    const action = deleteTodoTC.fulfilled({id: "todolistId2"}, "requestId", "todolistId2")
 
     const endState = tasksReducer(startState, action)
 

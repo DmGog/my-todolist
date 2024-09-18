@@ -14,9 +14,7 @@ test("correct todolist should be removed", () => {
         {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
-
-    // @ts-ignore
-    const action = deleteTodoTC.fulfilled({id: todolistId1}, "", {id: todolistId1})
+    const action = deleteTodoTC.fulfilled({id: todolistId1}, "", todolistId1)
     const endState = todolistsReducer(startState, action)
 
     expect(endState.length).toBe(1)
@@ -41,8 +39,7 @@ test("correct todolist should be added", () => {
         }
     }
 
-    // @ts-ignore
-    const endState = todolistsReducer(startState, createTodoTC.fulfilled(param, "", param))
+    const endState = todolistsReducer(startState, createTodoTC.fulfilled(param, "", param.todolist.title))
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe("New Todolist")
@@ -56,9 +53,11 @@ test("correct todolist should change its name", () => {
         {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
-//
-    // @ts-ignore
-    const action = updateTodoTitleTC.fulfilled({id: todolistId2, title: "New Todolist"},"",{id: todolistId2, title: "New Todolist"})
+
+    const action = updateTodoTitleTC.fulfilled({
+        id: todolistId2,
+        title: "New Todolist"
+    }, "requestId", {todolistId: todolistId2, title: "New Todolist"})
 
     const endState = todolistsReducer(startState, action)
 

@@ -101,7 +101,7 @@ const slice = createSlice({
                 state[index].entityStatus = action.payload.status
             }
         },
-        clearTodosData(state, action: PayloadAction) {
+        clearTodosData() {
             return []
         }
     },

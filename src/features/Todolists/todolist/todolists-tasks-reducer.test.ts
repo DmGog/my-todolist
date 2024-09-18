@@ -6,8 +6,8 @@ test("ids should be equals", () => {
     const startTodolistsState: Array<TodolistDomainType> = []
 
     const param = {todolist: {id: "4", title: "new todolist", order: 0, addedDate: ""}}
-    // @ts-ignore
-    const action = createTodoTC.fulfilled(param, "", param)
+
+    const action = createTodoTC.fulfilled(param, "", param.todolist.id)
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)
