@@ -3,9 +3,8 @@ import {useCallback, useEffect} from "react";
 import {
     changeTodolistFilterAC,
     createTodoTC,
-    deleteTodoTC,
+    deleteTodoTC, fetchTodosTC,
     FilterType,
-    getTodosTC,
     TodolistDomainType,
     updateTodoTitleTC
 } from "../todolistsSlice";
@@ -21,7 +20,7 @@ export const useTodolist = () => {
 
 
     useEffect(() => {
-        dispatch(getTodosTC())
+        dispatch(fetchTodosTC())
     }, []);
 
 
@@ -33,8 +32,8 @@ export const useTodolist = () => {
         dispatch(createTodoTC(title))
     }, [dispatch])
 
-    const updateTodoTitle = useCallback((newTitle: string, todolistId: string) => {
-        dispatch(updateTodoTitleTC(todolistId, newTitle))
+    const updateTodoTitle = useCallback((title: string, todolistId: string) => {
+        dispatch(updateTodoTitleTC({todolistId, title}))
     }, [dispatch])
 
     const changeFilter = useCallback((filter: FilterType, todolistId: string) => {
@@ -44,7 +43,7 @@ export const useTodolist = () => {
     /*                      tasks                     */
 
     const createTask = useCallback((title: string, todolistId: string) => {
-        dispatch(createTaskTC(todolistId, title))
+        dispatch(createTaskTC({todolistId, title}))
     }, [dispatch])
 
     const deleteTask = useCallback((taskId: string, todolistId: string) => {
@@ -53,11 +52,11 @@ export const useTodolist = () => {
     )
 
     const updateTaskStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {status}))
+        dispatch(updateTaskTC({todolistId, taskId, modelDomain: {status}}))
     }, [dispatch])
 
     const updateTaskTitle = useCallback((taskId: string, newTitle: string, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {title: newTitle}))
+        dispatch(updateTaskTC({todolistId, taskId, modelDomain: {title: newTitle}}))
     }, [dispatch])
 
     return {

@@ -1,8 +1,6 @@
 import {
-    createTodolistAC,
-    changeTodolistFilterAC, updateTodolistTitleAC,
-    deleteTodolistAC, getTodolistsAC, TodolistDomainType,
-    todolistsReducer, changeTodolistEntityStatusAC
+    changeTodolistFilterAC, TodolistDomainType,
+    todolistsReducer, changeTodolistEntityStatusAC, fetchTodosTC, deleteTodoTC, createTodoTC, updateTodoTitleTC
 } from "./todolistsSlice"
 import {v1} from "uuid"
 import {RequestStatusType} from "../../../App/appSlice";
@@ -17,7 +15,8 @@ test("correct todolist should be removed", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
-    const action = deleteTodolistAC({id: todolistId1})
+    // @ts-ignore
+    const action = deleteTodoTC.fulfilled({id: todolistId1}, "", {id: todolistId1})
     const endState = todolistsReducer(startState, action)
 
     expect(endState.length).toBe(1)
@@ -33,15 +32,17 @@ test("correct todolist should be added", () => {
         {id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
-
-    const endState = todolistsReducer(startState, createTodolistAC({
+    const param = {
         todolist: {
             id: todolistId2,
             title: "New Todolist",
             addedDate: "",
             order: 0
         }
-    }))
+    }
+
+    // @ts-ignore
+    const endState = todolistsReducer(startState, createTodoTC.fulfilled(param, "", param))
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe("New Todolist")
@@ -56,7 +57,8 @@ test("correct todolist should change its name", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
-    const action = updateTodolistTitleAC({id: todolistId2, title: "New Todolist"})
+    // @ts-ignore
+    const action = updateTodoTitleTC.fulfilled({id: todolistId2, title: "New Todolist"},"",{id: todolistId2, title: "New Todolist"})
 
     const endState = todolistsReducer(startState, action)
 
@@ -90,7 +92,7 @@ test("set todolists", () => {
         {id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle"},
     ]
 
-    const action = getTodolistsAC({todolists: startState})
+    const action = fetchTodosTC.fulfilled({todolists: startState}, "requestId")
 
     const endState = todolistsReducer([], action)
 
